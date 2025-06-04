@@ -1,0 +1,57 @@
+import 'failure.dart';
+import 'response_code.dart';
+
+enum DataSource {
+  success,
+  noContent,
+  badRequest,
+  forbidden,
+  unauthorised,
+  notFound,
+  internetServerError,
+  connectTimeout,
+  connectionError,
+  cancel,
+  receiveTimeout,
+  sendTimeout,
+  cacheError,
+  noInternetConnection,
+  defaultError
+}
+
+extension DataSourceExtension on DataSource {
+  Failure getFailure() {
+    switch (this) {
+      case DataSource.success:
+        return Failure(ResponseCode.success, ResponseMessage.success);
+      case DataSource.noContent:
+        return Failure(ResponseCode.noContent, ResponseMessage.noContent);
+      case DataSource.badRequest:
+        return Failure(ResponseCode.badRequest, ResponseMessage.badRequest);
+      case DataSource.forbidden:
+        return Failure(ResponseCode.forbidden, ResponseMessage.forbidden);
+      case DataSource.unauthorised:
+        return Failure(ResponseCode.unauthorised, ResponseMessage.unauthorised);
+      case DataSource.notFound:
+        return Failure(ResponseCode.notFound, ResponseMessage.notFound);
+      case DataSource.internetServerError:
+        return Failure(ResponseCode.internalServerError, ResponseMessage.internalServerError);
+      case DataSource.connectTimeout:
+        return Failure(ResponseCode.connectTimeout, ResponseMessage.connectTimeout);
+      case DataSource.connectionError:
+        return Failure(ResponseCode.connectionError, ResponseMessage.connectionError);
+      case DataSource.cancel:
+        return Failure(ResponseCode.cancel, ResponseMessage.cancel);
+      case DataSource.receiveTimeout:
+        return Failure(ResponseCode.receiveTimeout, ResponseMessage.receiveTimeout);
+      case DataSource.sendTimeout:
+        return Failure(ResponseCode.sendTimeout, ResponseMessage.sendTimeout);
+      case DataSource.cacheError:
+        return Failure(ResponseCode.cacheError, ResponseMessage.cacheError);
+      case DataSource.noInternetConnection:
+        return Failure(ResponseCode.noInternetConnection, ResponseMessage.noInternetConnection);
+      case DataSource.defaultError:
+        return Failure(ResponseCode.defaultError, ResponseMessage.defaultError);
+    }
+  }
+}
