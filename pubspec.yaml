@@ -47,6 +47,7 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   fpdart: ^1.1.1
   flutter_dotenv: ^5.2.1
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:

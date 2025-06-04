@@ -17,11 +17,16 @@ class RegistrationPageView extends StatefulWidget {
 }
 
 class _RegistrationPageView extends State<RegistrationPageView> {
-  final _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _roleController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+ 
+ @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +106,7 @@ class _RegistrationPageView extends State<RegistrationPageView> {
                   text: "Sign Up",
                   isLoading: state is SignupLoadingState,
                   onPressed: () {
-                    if (_passwordController.text !=
-                        _confirmPasswordController.text) {
+                    if (_passwordController.text != _confirmPasswordController.text) {
                       showSnackBar(context, "Passwords do not match");
                       return;
                     }

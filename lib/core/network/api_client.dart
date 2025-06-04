@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:id_card_front_end/core/constants/api_constants.dart';
 import 'package:id_card_front_end/core/network/dio_interceptor.dart';
+import 'package:logger/web.dart';
 import 'error_handler.dart';
+
 const String applicationJson="application/json";
 const String contentType="content-type";
 const String accept="accept";
@@ -9,6 +11,7 @@ const int apiTimeOut=6000;
 
 class ApiClient {
   final Dio _dio;
+  Logger logger=Logger();
 
   ApiClient(this._dio) {
     _dio.options = BaseOptions(
@@ -37,6 +40,7 @@ class ApiClient {
     try {
       return await _dio.post(path, data: data);
     } catch (error) {
+      logger.e("error in network layer $error");
       throw ErrorHandler.handle(error).failure;
     }
   }

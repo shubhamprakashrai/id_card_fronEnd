@@ -1,5 +1,7 @@
+import 'dart:io';
+
 class ResponseCode {
-  static const int success = 200;
+  static int success = HttpStatus.ok;
   static const int noContent = 201;
   static const int badRequest = 400;
   static const int unauthorised = 401;
