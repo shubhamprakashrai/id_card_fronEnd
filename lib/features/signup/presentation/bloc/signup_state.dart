@@ -1,3 +1,5 @@
+import 'package:id_card_front_end/features/signup/data/models/signup_response_model.dart';
+
 abstract class SignupState{
   const SignupState();
 }
@@ -11,7 +13,7 @@ class SignupLoadingState extends SignupState{
 }
 
 class SignupSucessState  extends SignupState{
-    final dynamic responseData;
+    final SignupResponseModel responseData;
   const SignupSucessState({required this.responseData});
 }
 

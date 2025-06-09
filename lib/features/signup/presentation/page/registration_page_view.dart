@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:id_card_front_end/core/ui_Utils/custom_btn.dart';
 import 'package:id_card_front_end/core/ui_Utils/custom_textfield.dart';
 import 'package:id_card_front_end/core/utils/show_snackbar.dart';
@@ -131,7 +132,9 @@ class _RegistrationPageView extends State<RegistrationPageView> {
                   children: <Widget>[
                     const Text("Already have an account? "),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                         context.go('/lgingPage');
+                        },
                         child: const Text("Login", style: TextStyle(color: Colors.purple))),
                   ],
                 )

@@ -1,5 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
+import 'package:id_card_front_end/core/auth_global_cubit/auth_cubit.dart';
+import 'package:id_card_front_end/core/local/hive_local_storage.dart';
+import 'package:id_card_front_end/core/local/local_Storage_base.dart';
 import 'package:id_card_front_end/core/network/api_client.dart';
 import 'package:id_card_front_end/features/signup/data/repository/signup_repository_implenetation.dart';
 import 'package:id_card_front_end/features/signup/domain/respository/signup_base_repository.dart';
@@ -12,13 +15,25 @@ void setupLocator() {
 
   // External
   sl.registerLazySingleton<Dio>(() => Dio());
+  
+    sl.registerLazySingleton<LocalStorage>(() => HiveStorage());
+  sl.registerLazySingleton<HiveStorage>(() => HiveStorage());
 
+  // Now this will work
+  sl.registerLazySingleton(() => AuthCubit(sl<HiveStorage>()));
+
+
+  
   // Core
   sl.registerLazySingleton<ApiClient>(() => ApiClient(sl<Dio>())); 
 
+  
   // Repository
-  sl.registerLazySingleton<SignupBaseRepository>(
-    () => SignupRepositoryImplenetation(sl<ApiClient>()),
+   sl.registerLazySingleton<SignupBaseRepository>(
+    () => SignupRepositoryImplenetation(
+      sl<ApiClient>(),
+      sl<LocalStorage>(),
+    ),
   );
 
   // Usecase
