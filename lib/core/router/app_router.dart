@@ -8,7 +8,7 @@ import 'package:id_card_front_end/features/signup/presentation/page/registration
 import 'package:id_card_front_end/features/templete/presentation/page/templete_view.dart';
 class AppRouter {
   static final GoRouter router=GoRouter(
-    initialLocation: '/registration',
+    initialLocation: '/lgingPage',
     refreshListenable: GoRouterRefreshStream(sl<AuthCubit>().stream),
     redirect: (context, state) {
       final authStatus=sl<AuthCubit>().state;

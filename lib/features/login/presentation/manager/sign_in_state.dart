@@ -1,18 +1,26 @@
-abstract class SignupState {
+
+import 'package:id_card_front_end/features/signup/data/models/signup_response_model.dart';
+
+abstract class SignInState {
+
 }
 
-class SignUpInitialState extends SignupState {
+class SignInInitialState extends SignInState {
+
+}
+
+class SignInSucessState extends SignInState{
+  SignupResponseModel signInResponseModel;
+  SignInSucessState({required this.signInResponseModel});
+}
+
+class SignInErrorState extends SignInState {
+  String errrorMessage;
+  SignInErrorState(this.errrorMessage);
   
 }
 
-class SignUpSucessState extends SignupState{
-  
-}
-
-class SignupErrorState extends SignupState {
-}
-
-class SignupProcessingState extends SignupState {
+class SignupProcessingState extends SignInState {
   
 }
 

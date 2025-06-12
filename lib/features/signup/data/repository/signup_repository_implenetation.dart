@@ -1,5 +1,4 @@
 import 'package:id_card_front_end/core/constants/api_constants.dart';
-import 'package:id_card_front_end/core/local/hive_local_storage.dart';
 import 'package:id_card_front_end/core/local/local_Storage_base.dart';
 import 'package:id_card_front_end/core/network/api_client.dart';
 import 'package:id_card_front_end/features/signup/data/models/signup_request_model.dart';

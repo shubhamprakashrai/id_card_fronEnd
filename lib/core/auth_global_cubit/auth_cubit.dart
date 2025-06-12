@@ -19,5 +19,9 @@ class AuthCubit extends Cubit<AuthStatus>{
    await hiveStorage.clearStorage();
    emit(AuthStatus.unAuthenticated);
   }
+
+   Future<void> updateAuthStatus(AuthStatus status) async {
+    emit(status);
+  }
  
 }
