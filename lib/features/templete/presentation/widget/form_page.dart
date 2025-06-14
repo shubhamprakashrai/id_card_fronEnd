@@ -16,20 +16,17 @@ class _FormPageState extends State<FormPage> {
  Widget selectedWidget({required String name, required String role}){
    switch (widget.index) {
      case 0:
-        return TemplateOne(name: name,role: role,);
+        return TemplateOne(name: name,role: role, id: "905750250", dob: "01/01/1990",blood: "A+",phone: "1201248510",email: "email@yourdomain.com",imagePath: "assets/images/profile.jpg",);
       case 1:
-       return TemplateOne(name: name,role: role,);
+       return TemplateOne(name: name,role: role,id: "905750250", dob: "01/01/1990",blood: "A+",phone: "1201248510",email: "email@yourdomain.com",imagePath: "assets/images/profile.jpg",);
        case 2:
-      return TemplateOne(name: name,role: role,);
+      return TemplateOne(name: name,role: role,id: "905750250", dob: "01/01/1990",blood: "A+",phone: "1201248510",email: "email@yourdomain.com",imagePath: "assets/images/profile.jpg",);
         case 3:
-        return TemplateOne(name: name,role: role,);
+        return TemplateOne(name: name,role: role,id: "905750250", dob: "01/01/1990",blood: "A+",phone: "1201248510",email: "email@yourdomain.com",imagePath: "assets/images/profile.jpg",);
         case 4:
-       return TemplateOne(name: name,role: role,);
+       return TemplateOne(name: name,role: role,id: "905750250", dob: "01/01/1990",blood: "A+",phone: "1201248510",email: "email@yourdomain.com",imagePath: "assets/images/profile.jpg",);
        default:
         return const Text("Invalid template selected");
-      
-
-     
    }
  }
 

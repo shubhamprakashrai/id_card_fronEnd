@@ -34,7 +34,7 @@ class TempleteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> templates = [
-          TemplateOne(name: "name",role: "role",),
+          TemplateOne(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
           TemplateTwo(name: "name",role: "role",),
           TemplateThree(name: "name",role: "role",),
           TemplateFour(name: "name",role: "role",),
