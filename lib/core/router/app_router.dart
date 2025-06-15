@@ -32,7 +32,7 @@ class AppRouter {
       GoRoute(
         path: RouteName.template,
         name: RouteName.template,
-        builder: (context, state) => const TempleteView(),
+        builder: (context, state) => const TemplateView(),
       ),
       GoRoute(
         path: RouteName.formView,
