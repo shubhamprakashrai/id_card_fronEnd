@@ -52,7 +52,7 @@ dependencies:
   flutter_svg: ^2.1.0
   image_picker: ^1.1.2
   permission_handler: ^12.0.0+1
-  file_picker:
+  file_picker: ^10.2.0
   excel:
   path:
 
