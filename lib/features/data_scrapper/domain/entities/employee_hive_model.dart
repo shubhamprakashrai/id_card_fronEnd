@@ -26,6 +26,19 @@ class EmployeeHiveModel extends HiveObject {
   @HiveField(6)
   final String photoFileName;
 
+  @HiveField(7)
+  final String mobileNumber;
+
+  @HiveField(8)
+  final String bloodGroup;
+
+  @HiveField(9)
+  final String dob;
+
+  @HiveField(10)
+  final String email;
+
+
   EmployeeHiveModel({
     required this.fullName,
     required this.designation,
@@ -34,6 +47,10 @@ class EmployeeHiveModel extends HiveObject {
     required this.issueDate,
     required this.expiryDate,
     required this.photoFileName,
+    this.mobileNumber = '',
+    this.bloodGroup = '',
+    this.dob = '',
+    this.email = '',
   });
 
   // Convert from Entity to Hive Model
@@ -46,6 +63,10 @@ class EmployeeHiveModel extends HiveObject {
       issueDate: entity.issueDate,
       expiryDate: entity.expiryDate,
       photoFileName: entity.photoFileName,
+      mobileNumber: entity.mobileNumber,
+      bloodGroup: entity.bloodGroup,
+      dob: entity.dob,
+      email: entity.email,
     );
   }
 
@@ -59,6 +80,10 @@ class EmployeeHiveModel extends HiveObject {
       issueDate: issueDate,
       expiryDate: expiryDate,
       photoFileName: photoFileName,
+      mobileNumber: mobileNumber,
+      bloodGroup: bloodGroup,
+      dob: dob,
+      email: email,
     );
   }
 
@@ -73,7 +98,11 @@ class EmployeeHiveModel extends HiveObject {
               idNumber == other.idNumber &&
               issueDate == other.issueDate &&
               expiryDate == other.expiryDate &&
-              photoFileName == other.photoFileName;
+              photoFileName == other.photoFileName &&
+              mobileNumber == other.mobileNumber &&
+              bloodGroup == other.bloodGroup &&
+              dob == other.dob &&
+              email == other.email;
 
   @override
   int get hashCode =>
@@ -83,5 +112,9 @@ class EmployeeHiveModel extends HiveObject {
       idNumber.hashCode ^
       issueDate.hashCode ^
       expiryDate.hashCode ^
-      photoFileName.hashCode;
+      photoFileName.hashCode ^
+      mobileNumber.hashCode ^
+      bloodGroup.hashCode ^
+      dob.hashCode ^
+      email.hashCode;
 }

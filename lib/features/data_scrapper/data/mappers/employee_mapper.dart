@@ -18,6 +18,10 @@ extension EmployeeEntityMapper on EmployeeHiveModel {
       issueDate: issueDate,
       expiryDate: expiryDate,
       photoFileName: photoFileName,
+      mobileNumber: mobileNumber,
+      bloodGroup: bloodGroup,
+      dob: dob,
+      email: email
     );
   }
 }

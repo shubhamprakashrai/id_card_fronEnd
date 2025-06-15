@@ -9,6 +9,10 @@ class Employee extends Equatable {
   final String issueDate;
   final String expiryDate;
   final String photoFileName;
+  final String mobileNumber;
+  final String bloodGroup;
+  final String dob;
+  final String email;
 
   const Employee({
     required this.fullName,
@@ -18,6 +22,10 @@ class Employee extends Equatable {
     required this.issueDate,
     required this.expiryDate,
     required this.photoFileName,
+    this.bloodGroup = '',
+    this.dob = '',
+    this.mobileNumber = '',
+    this.email = '',
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) {
@@ -29,6 +37,10 @@ class Employee extends Equatable {
       issueDate: json['issueDate'] ?? '',
       expiryDate: json['expiryDate'] ?? '',
       photoFileName: json['photoFileName'] ?? '',
+      bloodGroup: json['bloodGroup'] ?? '',
+      dob: json['dob'] ?? '',
+      mobileNumber: json['mobileNumber'] ?? '',
+      email: json['email'] ?? '',
     );
   }
 
@@ -41,6 +53,10 @@ class Employee extends Equatable {
       'issueDate': issueDate,
       'expiryDate': expiryDate,
       'photoFileName': photoFileName,
+      'bloodGroup': bloodGroup,
+      'dob': dob,
+      'mobileNumber': mobileNumber,
+      'email': email,
     };
   }
 
