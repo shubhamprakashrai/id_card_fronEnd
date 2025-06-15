@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:id_card_front_end/features/data_scrapper/presentation/pages/import_excel_page.dart' show ImportExcelPage;
 import 'package:id_card_front_end/features/login/presentation/page/sign_in_view.dart';
 import 'package:id_card_front_end/features/signup/presentation/page/registration_page_view.dart';
 import 'package:id_card_front_end/features/splash/presentation/pages/splash_view.dart';
@@ -37,6 +38,12 @@ class AppRouter {
         path: RouteName.formView,
         name: RouteName.formView,
         builder: (context, state) => FormPage(index: state.extra as int,),
+      ),
+
+      GoRoute(
+        path: RouteName.importExcelPage,
+        name: RouteName.importExcelPage,
+        builder: (context, state) => ImportExcelPage(),
       ),
     ],
   );

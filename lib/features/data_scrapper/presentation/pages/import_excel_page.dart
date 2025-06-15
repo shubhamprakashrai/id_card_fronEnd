@@ -1,146 +1,118 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as path;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/employee.dart';
-import '../../domain/repositories/employee_repository.dart';
+import '../manager/importer_bloc/importer_bloc.dart';
 
-class ImportExcelPage extends StatefulWidget {
-  final EmployeeRepository repository;
-
-  const ImportExcelPage({super.key, required this.repository});
+class ImportExcelPage extends StatelessWidget {
+  const ImportExcelPage({super.key});
 
   @override
-  State<ImportExcelPage> createState() => _ImportExcelPageState();
+  Widget build(BuildContext context) {
+    return const _ImportExcelView();
+  }
 }
 
-class _ImportExcelPageState extends State<ImportExcelPage> {
-  bool _isLoading = false;
-  String? _errorMessage;
-  List<Employee> _employees = [];
+class _ImportExcelView extends StatefulWidget {
+  const _ImportExcelView();
+
+  @override
+  State<_ImportExcelView> createState() => _ImportExcelViewState();
+}
+
+class _ImportExcelViewState extends State<_ImportExcelView> {
+  @override
+  void dispose() {
+    context.read<ImporterBloc>().add(const ClearImportedDataEvent());
+    super.dispose();
+  }
 
   Future<void> _importExcel() async {
-    try {
-      setState(() {
-        _isLoading = true;
-        _errorMessage = null;
-      });
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xls', 'xlsx'],
+    );
 
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['xlsx', 'xls'],
-      );
-
-      if (result != null) {
-        final file = File(result.files.single.path!);
-        final employees = await widget.repository.importEmployeesFromExcel(file);
-        
-        setState(() {
-          _employees = employees;
-        });
+    if (result != null && result.files.single.path != null) {
+      final file = File(result.files.single.path!);
+      if (mounted) {
+        context.read<ImporterBloc>().add(ImportExcelEvent(file));
       }
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Error importing file: $e';
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
-  Future<void> _saveEmployees() async {
-    if (_employees.isEmpty) return;
+  Future<void> _saveEmployees(List<Employee> employees) async {
+    if (employees.isEmpty) return;
 
-    try {
-      setState(() {
-        _isLoading = true;
-        _errorMessage = null;
-      });
-
-      await widget.repository.saveEmployees(_employees);
-      
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Employees imported successfully!')),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _errorMessage = 'Error saving employees: $e';
-        });
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Save functionality to be implemented')),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Import Employee Data'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ElevatedButton(
-              onPressed: _isLoading ? null : _importExcel,
-              child: const Text('Import Excel File'),
+      appBar: AppBar(title: const Text('Import Employee Data')),
+      body: BlocConsumer<ImporterBloc, ImporterState>(
+        listener: (context, state) {
+          if (state.error != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error!)),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ElevatedButton(
+                  onPressed: state.isLoading ? null : _importExcel,
+                  child: const Text('Import Excel File'),
+                ),
+                const SizedBox(height: 16),
+                if (state.isLoading)
+                  const Center(child: CircularProgressIndicator()),
+                if (state.data?.isNotEmpty ?? false) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    'Imported Employees (${state.data!.length}):',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.data!.length,
+                      itemBuilder: (context, index) {
+                        final employee = state.data![index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: ListTile(
+                            title: Text(employee.fullName),
+                            subtitle: Text(employee.designation),
+                            trailing: Text(employee.department),
+                            onTap: () => _showEmployeeDetails(employee),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: state.isLoading || state.data!.isEmpty
+                        ? null
+                        : () => _saveEmployees(state.data!),
+                    child: const Text('Save All Employees'),
+                  ),
+                ],
+              ],
             ),
-            const SizedBox(height: 16),
-            if (_isLoading) const CircularProgressIndicator(),
-            if (_errorMessage != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  _errorMessage!,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
-            if (_employees.isNotEmpty) ...[
-              const SizedBox(height: 16),
-              Text(
-                'Imported Employees (${_employees.length}):',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _employees.length,
-                  itemBuilder: (context, index) {
-                    final employee = _employees[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: ListTile(
-                        title: Text(employee.fullName),
-                        subtitle: Text(employee.designation),
-                        trailing: Text(employee.department),
-                        onTap: () {
-                          // Show employee details
-                          _showEmployeeDetails(employee);
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _isLoading || _employees.isEmpty ? null : _saveEmployees,
-                child: const Text('Save All Employees'),
-              ),
-            ],
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -153,7 +125,6 @@ class _ImportExcelPageState extends State<ImportExcelPage> {
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
               _buildDetailRow('Designation', employee.designation),
               _buildDetailRow('Department', employee.department),
@@ -180,10 +151,7 @@ class _ImportExcelPageState extends State<ImportExcelPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '$label: ',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
           Expanded(child: Text(value)),
         ],
       ),
