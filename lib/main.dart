@@ -6,6 +6,7 @@ import 'package:id_card_front_end/core/local/hive_local_storage.dart';
 import 'package:id_card_front_end/core/router/app_router.dart';
 import 'package:id_card_front_end/env/env_loader.dart';
 import 'package:id_card_front_end/features/data_scrapper/presentation/manager/importer_bloc/importer_bloc.dart';
+import 'package:id_card_front_end/features/generate_templates/presentation/manager/generate_templates/generate_template_bloc.dart';
 import 'package:id_card_front_end/features/login/presentation/manager/sign_in_bloc.dart';
 import 'package:id_card_front_end/features/signup/presentation/bloc/signup_bloc.dart';
 
@@ -26,9 +27,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<SignupBloc>(create: (context) => sl<SignupBloc>()),
           BlocProvider<AuthCubit>(create: (context) => sl<AuthCubit>()),
           BlocProvider<ImporterBloc>(create: (context) => sl<ImporterBloc>()),
-          BlocProvider<SignInBloc>(
-            create: (context) => sl<SignInBloc>(),
-          ),
+          BlocProvider<SignInBloc>(create: (context) => sl<SignInBloc>()),
+          BlocProvider<GenerateTemplateBloc>(create: (context) => sl<GenerateTemplateBloc>()),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,

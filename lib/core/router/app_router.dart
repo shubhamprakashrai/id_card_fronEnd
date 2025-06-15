@@ -13,8 +13,14 @@ import 'package:id_card_front_end/features/templete/presentation/widget/form_pag
 import 'route_names.dart';
 
 class AppRouter {
+
+  /// This is the navigator key used for the GoRouter.
+  /// You can use this key to access the navigator from anywhere in your app.
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   static final GoRouter router = GoRouter(
     initialLocation: RouteName.splash,
+    navigatorKey: navigatorKey,
     routes: [
       GoRoute(
         path: RouteName.splash,

@@ -21,6 +21,10 @@ import '../../features/data_scrapper/domain/use_cases/import_employees_usecase.d
     as _i166;
 import '../../features/data_scrapper/presentation/manager/importer_bloc/importer_bloc.dart'
     as _i1069;
+import '../../features/generate_templates/domain/use_cases/check_storage_permission_use_case.dart'
+    as _i1014;
+import '../../features/generate_templates/presentation/manager/generate_templates/generate_template_bloc.dart'
+    as _i78;
 import '../../features/login/data/repository/sign_in_repository.dart' as _i155;
 import '../../features/login/domain/repository/sign_in_base_repository.dart'
     as _i874;
@@ -51,6 +55,8 @@ _i174.GetIt inject(
   gh.singleton<_i519.ImportEmployeesFromLocalUseCase>(
       () => const _i519.ImportEmployeesFromLocalUseCase());
   gh.lazySingleton<_i557.ApiClient>(() => _i557.ApiClient());
+  gh.lazySingleton<_i1014.CheckStoragePermissionUseCase>(
+      () => const _i1014.CheckStoragePermissionUseCase());
   gh.lazySingleton<_i612.EmployeeRepository>(
       () => _i588.EmployeeRepositoryImpl());
   gh.singleton<_i166.ImportEmployeesUseCase>(
@@ -63,6 +69,8 @@ _i174.GetIt inject(
         gh<_i166.ImportEmployeesUseCase>(),
         gh<_i519.ImportEmployeesFromLocalUseCase>(),
       ));
+  gh.factory<_i78.GenerateTemplateBloc>(() =>
+      _i78.GenerateTemplateBloc(gh<_i1014.CheckStoragePermissionUseCase>()));
   gh.lazySingleton<_i516.UserSignupUsecase>(
       () => _i516.UserSignupUsecase(gh<_i735.SignupBaseRepository>()));
   gh.lazySingleton<_i422.SignInUsecase>(
