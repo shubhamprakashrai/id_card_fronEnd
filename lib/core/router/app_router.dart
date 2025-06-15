@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 import 'package:id_card_front_end/features/data_scrapper/presentation/pages/import_excel_page.dart' show ImportExcelPage;
-import 'package:id_card_front_end/features/generate_templates/presentation/pages/generate_templates.dart';
+import 'package:id_card_front_end/features/generate_templates/presentation/pages/generate_templates_view.dart';
 import 'package:id_card_front_end/features/login/presentation/page/sign_in_view.dart';
 import 'package:id_card_front_end/features/signup/presentation/page/registration_page_view.dart';
 import 'package:id_card_front_end/features/splash/presentation/pages/splash_view.dart';
@@ -51,7 +51,7 @@ class AppRouter {
       GoRoute(
         path: RouteName.generateIds,
         name: RouteName.generateIds,
-        builder: (context, state) => GenerateTemplates(templateID: int.tryParse(state.uri.queryParameters["templateID"] ?? "0") ?? 0, employees: state.extra as List<Employee>),
+        builder: (context, state) => GenerateTemplatesView(templateID: int.tryParse(state.uri.queryParameters["templateID"] ?? "0") ?? 0, employees: state.extra as List<Employee>),
       ),
     ],
   );

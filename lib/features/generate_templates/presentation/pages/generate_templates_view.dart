@@ -2,18 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
+import 'package:id_card_front_end/features/generate_templates/presentation/widgets/template_wrapper.dart';
 import 'package:id_card_front_end/features/templete/presentation/widget/template_manager/template_manager.dart';
 
-class GenerateTemplates extends StatefulWidget {
-  const GenerateTemplates({super.key, required this.employees, required this.templateID});
+class GenerateTemplatesView extends StatefulWidget {
+  const GenerateTemplatesView({super.key, required this.employees, required this.templateID});
   final List<Employee> employees;
   final int templateID ;
 
   @override
-  State<GenerateTemplates> createState() => _GenerateTemplatesState();
+  State<GenerateTemplatesView> createState() => _GenerateTemplatesViewState();
 }
 
-class _GenerateTemplatesState extends State<GenerateTemplates> {
+class _GenerateTemplatesViewState extends State<GenerateTemplatesView> {
 
   @override
   void initState() {
@@ -30,10 +31,11 @@ class _GenerateTemplatesState extends State<GenerateTemplates> {
       body: widget.employees.isEmpty
         ? const Center(child: Text('No employees found. Please import data first.'))
         : ListView.separated(
+          padding: const EdgeInsets.all(16),
           itemCount: widget.employees.length,
           itemBuilder: (context, index) {
             final employee = widget.employees[index];
-            return _buildTemplate(employee, widget.templateID);
+            return TemplateWrapper(child: _buildTemplate(employee, widget.templateID));
           },
           separatorBuilder: (context, index) => const SizedBox(height: 16,)
         ),
