@@ -48,10 +48,10 @@ class TemplateTwo extends StatelessWidget {
                   // 0xff66BB6A
                   // color: Colors.red,
                   borderRadius: BorderRadius.all(Radius.circular(8)),
-                  image: DecorationImage(
+                  image: imagePath.isNotEmpty?DecorationImage(
                     image: AssetImage(imagePath),
                     fit: BoxFit.cover,
-                  ),
+                  ): null,
                 ),
               ),
               Column(

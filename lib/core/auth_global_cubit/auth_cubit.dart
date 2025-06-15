@@ -11,40 +11,32 @@ enum AuthStatus{
   bool get isAuthenticated => this == AuthStatus.authenticated;
   bool get isUnAuthenticated => this == AuthStatus.unAuthenticated;
 
+  AuthStatus copyWith({AuthStatus? status}) {
+    return status ?? this;
+  }
+
 }
 
 @injectable
 class AuthCubit extends Cubit<AuthStatus>{
 
-  AuthCubit():super(AuthStatus.unKnown);
+  AuthCubit() : super(AuthStatus.unKnown);
 
-  Future<bool> checkAuthStatus()async{
-
-    // Handle errors if needed
-    // and emit the appropriate state
-    // For example, if an error occurs, you can emit AuthStatus.unAuthenticated
+  Future<void> checkAuthStatus() async {
     try {
-      print("Checking auth status...21");
-      final token= HiveStorage.instance.authToken;
-      print("Checking auth status...212 $token");
-      if (token !=null && token.isNotEmpty) {
-        print("User is authenticated with token: $token");
-        emit(AuthStatus.authenticated);
-        return true;
-      }
-      else{
-        print("User is not authenticated, no token found.");
-        emit(AuthStatus.unAuthenticated);
+      print('Checking auth status...');
+      final token = await HiveStorage.instance.getToken();
+      print('Token from storage: $token');
+
+      if (token != null) {
+        emit(state.copyWith(status: AuthStatus.authenticated));
+      } else {
+        emit(state.copyWith(status: AuthStatus.unAuthenticated));
       }
     } catch (e) {
-      print("Error checking auth status: $e");
-      emit(AuthStatus.unAuthenticated);
+      print('Error checking auth status: $e');
+      emit(state.copyWith(status: AuthStatus.unAuthenticated));
     }
-
-    return false;
-
-
-
   }
 
   Future<void> logOut()async{

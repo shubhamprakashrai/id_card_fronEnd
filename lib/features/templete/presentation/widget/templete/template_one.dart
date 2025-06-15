@@ -90,10 +90,10 @@ class TemplateOne extends StatelessWidget {
                 child: CircleAvatar(
                           radius: 45,
                           backgroundColor: Colors.teal,
-                          child: CircleAvatar(
+                          child: (imagePath.isNotEmpty)? CircleAvatar(
                             radius: 42,
                             backgroundImage: AssetImage(imagePath),
-                          ),
+                          ): null,
                         ),
               ),
             ),
@@ -133,12 +133,6 @@ class TemplateOne extends StatelessWidget {
                          infoRow("Blood", blood),
                          infoRow("Phone", phone),
                          infoRow("E-mail", email),
-                        //  const Spacer(),
-                         // Image.asset(
-                         //   'assets/images/barcode.png', // placeholder for barcode
-                         //   height: 40,
-                         // ),
-                        //  const SizedBox(height: 8),
                        ],
                      ),
                    ),

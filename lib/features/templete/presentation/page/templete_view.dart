@@ -15,11 +15,11 @@ class TempleteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> templates = [
-          TemplateOne(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
-          TemplateTwo(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
-          TemplateThree(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
-          TemplateFour(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
-          TemplateFive(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
+      TemplateOne(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
+      TemplateTwo(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
+      TemplateThree(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
+      TemplateFour(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
+      TemplateFive(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
     ];
 
     return Scaffold(

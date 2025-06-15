@@ -15,39 +15,38 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
 
+  late final AuthCubit _authCubit;
+
   @override
   void initState() {
     super.initState();
+    _authCubit = context.read<AuthCubit>();
     _checkAuthStatus();
   }
 
   FutureOr<void> _checkAuthStatus() async {
-    print("Checking auth status...");
-    var res = await context.read<AuthCubit>().checkAuthStatus();
-    print("Auth status checked: $res");
-    Future.delayed(Duration(seconds: 2), () {
-      if(res){
-        context.goNamed(RouteName.template);
-      }
-      else{
-        context.goNamed(RouteName.login);
-      }
-    });
-
+    await _authCubit.checkAuthStatus();
   }
+
+  void _listenAuthStatus(BuildContext context, AuthStatus state) {
+    if(state.isAuthenticated){
+      context.goNamed(RouteName.template);
+    }
+    else{
+      context.goNamed(RouteName.login);
+    }
+  }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthStatus>(
-      listener: (context, state) {
-        print("Auth status changed: $state");
-        if(state.isAuthenticated){
-          context.goNamed(RouteName.template);
-        }
-        else{
-          context.goNamed(RouteName.login);
-        }
-      },
+      bloc: _authCubit,
+      listener: _listenAuthStatus,
       child: Scaffold(
         body: Center(
           child: Column(

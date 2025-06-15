@@ -130,7 +130,7 @@ class _FormPageState extends State<FormPage> {
     final blood = bloodController.text.trim();
     final phone = phoneController.text.trim();
     final email = emailController.text.trim();
-    final imagePath = selectedImage?.path ?? "assets/images/profile.jpg";
+    final imagePath = selectedImage?.path;
 
     if ([name, role, id, dob, blood, phone, email].any((field) => field.isEmpty)) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -139,7 +139,8 @@ class _FormPageState extends State<FormPage> {
       return;
     }
 
-    Navigator.push(
+    if(imagePath != null) {
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => PreviewPage(
@@ -156,6 +157,7 @@ class _FormPageState extends State<FormPage> {
         ),
       ),
     );
+    }
   }
 
   Widget buildTextField(String label, TextEditingController controller,

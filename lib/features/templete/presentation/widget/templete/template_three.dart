@@ -46,10 +46,10 @@ class TemplateThree extends StatelessWidget {
                     border: Border.all(color:  Color(0xff557eb0),width: 4),
                     // color: Colors.red,
                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                    image: DecorationImage(
+                    image: imagePath.isNotEmpty?DecorationImage(
                       image: AssetImage(imagePath),
                       fit: BoxFit.cover,
-                    ),
+                    ): null,
                   ),
                 ),
                 Column(
