@@ -25,6 +25,11 @@ class _FormPageState extends State<FormPage> {
   final departmentController = TextEditingController();
   final issueDateController = TextEditingController();
   final expiryDateController = TextEditingController();
+  final mobileNumberController = TextEditingController();
+  final bloodGroupController = TextEditingController();
+  final dobController = TextEditingController();
+  final emailController = TextEditingController();
+
   File? selectedImage;
   String? imagePath;
 
@@ -44,7 +49,7 @@ class _FormPageState extends State<FormPage> {
     if (image != null) {
       setState(() {
         selectedImage = File(image.path);
-        imagePath = image.path; // Store the path for preview
+        imagePath = image.path;
       });
       print("Image picked: ${image.path}");
     } else {
@@ -52,7 +57,7 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
-  // Get the appropriate template widget
+  // Get template widget
   Widget _getTemplateWidget(Employee employee) {
     switch (widget.index) {
       case 0:
@@ -79,6 +84,10 @@ class _FormPageState extends State<FormPage> {
       issueDate: issueDateController.text.trim(),
       expiryDate: expiryDateController.text.trim(),
       photoFileName: imagePath ?? '',
+      mobileNumber: mobileNumberController.text.trim(),
+      bloodGroup: bloodGroupController.text.trim(),
+      dob: dobController.text.trim(),
+      email: emailController.text.trim(),
     );
 
     if ([
@@ -88,6 +97,10 @@ class _FormPageState extends State<FormPage> {
       employee.department,
       employee.issueDate,
       employee.expiryDate,
+      employee.mobileNumber,
+      employee.bloodGroup,
+      employee.dob,
+      employee.email,
     ].any((field) => field.isEmpty)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all required fields')),
@@ -113,6 +126,10 @@ class _FormPageState extends State<FormPage> {
     departmentController.dispose();
     issueDateController.dispose();
     expiryDateController.dispose();
+    mobileNumberController.dispose();
+    bloodGroupController.dispose();
+    dobController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -142,24 +159,24 @@ class _FormPageState extends State<FormPage> {
         const SizedBox(height: 8),
         selectedImage != null
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.file(
-                  selectedImage!,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              )
+          borderRadius: BorderRadius.circular(8),
+          child: Image.file(
+            selectedImage!,
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
+          ),
+        )
             : Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                alignment: Alignment.center,
-                child: const Text("No image"),
-              ),
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          alignment: Alignment.center,
+          child: const Text("No image"),
+        ),
         const SizedBox(height: 8),
         ElevatedButton.icon(
           onPressed: pickImage,
@@ -184,6 +201,11 @@ class _FormPageState extends State<FormPage> {
             buildTextField("Department", departmentController),
             buildTextField("Issue Date (DD/MM/YYYY)", issueDateController),
             buildTextField("Expiry Date (DD/MM/YYYY)", expiryDateController),
+            buildTextField("Mobile Number", mobileNumberController, type: TextInputType.phone),
+            buildTextField("Blood Group", bloodGroupController),
+            buildTextField("Date of Birth (DD/MM/YYYY)", dobController),
+            buildTextField("Email", emailController, type: TextInputType.emailAddress),
+
             const SizedBox(height: 12),
             buildImagePicker(),
             const SizedBox(height: 20),
