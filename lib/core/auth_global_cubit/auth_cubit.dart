@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:id_card_front_end/core/local/local_Storage_base.dart';
+import 'package:id_card_front_end/core/local/hive_local_storage.dart';
+import 'package:id_card_front_end/features/data_scrapper/domain/entities/user_hive_model.dart';
 import 'package:id_card_front_end/features/signup/data/models/signup_response_model.dart' show UserModel;
 import 'package:injectable/injectable.dart';
 
@@ -15,11 +16,12 @@ enum AuthStatus{
 
 @injectable
 class AuthCubit extends Cubit<AuthStatus>{
- final LocalStorage hiveStorage;
-  AuthCubit(this.hiveStorage):super(AuthStatus.unKnown);
+
+  AuthCubit():super(AuthStatus.unKnown);
 
   Future<void> checkAuthStatus()async{
-  final token=await hiveStorage.getToken();
+
+  final token= HiveStorage.instance.authToken;
    if (token!=null && token.isNotEmpty) {
      emit(AuthStatus.authenticated);
    }
@@ -29,7 +31,7 @@ class AuthCubit extends Cubit<AuthStatus>{
   }
 
   Future<void> logOut()async{
-   await hiveStorage.clearStorage();
+   await HiveStorage.instance.clearAll();
    emit(AuthStatus.unAuthenticated);
   }
 
@@ -44,8 +46,8 @@ class AuthCubit extends Cubit<AuthStatus>{
     // method is save user and save token
     if (status == AuthStatus.authenticated) {
      // Retrieve both these data from the method that is calling this method
-     await hiveStorage.saveUser(user);
-     await hiveStorage.savedToken(token);
+     await HiveStorage.instance.saveUser(UserHiveModel.fromJson(user.toJson()));
+     await HiveStorage.instance.setAuthToken(token);
     }
     emit(status);
   }
