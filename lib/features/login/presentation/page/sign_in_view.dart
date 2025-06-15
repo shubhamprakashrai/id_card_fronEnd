@@ -26,7 +26,8 @@ class _SignInView extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocConsumer<SignInBloc, SignInState>(builder: (context, state) {
+    body: BlocConsumer<SignInBloc, SignInState>(
+      builder: (context, state) {
       return SafeArea(
         child: Center(
           child: Container(

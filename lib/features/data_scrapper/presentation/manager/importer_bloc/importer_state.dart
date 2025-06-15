@@ -28,8 +28,5 @@ class ImporterState extends BlocEventState<List<Employee>> {
   }
 
   @override
-  List<Object?> get props => [state, event, data, statusCode, error];
-
-  @override
   ImporterState clear() => const ImporterState();
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:id_card_front_end/core/local/hive_local_storage.dart';
-import 'package:id_card_front_end/features/data_scrapper/domain/entities/user_hive_model.dart';
 import 'package:id_card_front_end/features/signup/data/models/signup_response_model.dart' show UserModel;
 import 'package:injectable/injectable.dart';
 
@@ -19,15 +18,33 @@ class AuthCubit extends Cubit<AuthStatus>{
 
   AuthCubit():super(AuthStatus.unKnown);
 
-  Future<void> checkAuthStatus()async{
+  Future<bool> checkAuthStatus()async{
 
-  final token= HiveStorage.instance.authToken;
-   if (token!=null && token.isNotEmpty) {
-     emit(AuthStatus.authenticated);
-   }
-   else{
-     emit(AuthStatus.unAuthenticated);
-   }
+    // Handle errors if needed
+    // and emit the appropriate state
+    // For example, if an error occurs, you can emit AuthStatus.unAuthenticated
+    try {
+      print("Checking auth status...21");
+      final token= HiveStorage.instance.authToken;
+      print("Checking auth status...212 $token");
+      if (token !=null && token.isNotEmpty) {
+        print("User is authenticated with token: $token");
+        emit(AuthStatus.authenticated);
+        return true;
+      }
+      else{
+        print("User is not authenticated, no token found.");
+        emit(AuthStatus.unAuthenticated);
+      }
+    } catch (e) {
+      print("Error checking auth status: $e");
+      emit(AuthStatus.unAuthenticated);
+    }
+
+    return false;
+
+
+
   }
 
   Future<void> logOut()async{
@@ -46,7 +63,7 @@ class AuthCubit extends Cubit<AuthStatus>{
     // method is save user and save token
     if (status == AuthStatus.authenticated) {
      // Retrieve both these data from the method that is calling this method
-     await HiveStorage.instance.saveUser(UserHiveModel.fromJson(user.toJson()));
+     await HiveStorage.instance.saveUser(user);
      await HiveStorage.instance.setAuthToken(token);
     }
     emit(status);

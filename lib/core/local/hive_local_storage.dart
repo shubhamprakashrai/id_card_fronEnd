@@ -2,8 +2,12 @@
 import 'dart:async';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/mappers/user_model_hive_model_mapper.dart';
 import 'package:id_card_front_end/features/data_scrapper/domain/entities/employee_hive_model.dart';
 import 'package:id_card_front_end/features/data_scrapper/domain/entities/user_hive_model.dart';
+import 'package:id_card_front_end/features/signup/data/models/signup_response_model.dart';
+import 'package:path_provider/path_provider.dart' show getApplicationDocumentsDirectory;
+
 
 class HiveStorage {
   static const String _authBoxName = 'auth_box';
@@ -29,9 +33,18 @@ class HiveStorage {
   }
 
   FutureOr<void> _openBoxes() async {
-    _authBox = await Hive.openBox(_authBoxName);
-    _employeeBox = await Hive.openBox<EmployeeHiveModel>(_employeeBoxName);
-    _userBox = await Hive.openBox<UserHiveModel>(_userBoxName); // Add this line
+
+    // Wrap fill method in try catch to handle any exceptions
+    // and log the error if needed
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      await Hive.initFlutter(dir.path);
+      _authBox = await Hive.openBox(_authBoxName);
+      _employeeBox = await Hive.openBox<EmployeeHiveModel>(_employeeBoxName);
+      _userBox = await Hive.openBox<UserHiveModel>(_userBoxName);
+    } catch (e) {
+      print('Error opening Hive boxes: $e');
+    }
   }
 
   void _registerAdapters() {
@@ -41,7 +54,7 @@ class HiveStorage {
 
 
 
-  Future<void> saveUser(UserHiveModel user) => _userBox.put('current_user', user);
+  Future<void> saveUser(UserModel user) => _userBox.put('current_user', user.toHiveModel());
   UserHiveModel? getCurrentUser() => _userBox.get('current_user');
   Future<void> clearUser() => _userBox.clear();
 
@@ -67,4 +80,18 @@ class HiveStorage {
     await _employeeBox.close();
     await _userBox.close();
   }
+
+  Future<void> clearStorage() => clearAll();
+
+  Future<String?> getToken() => Future.value(authToken);
+
+  Future<UserModel?> getUser() {
+    var res = getCurrentUser();
+    if (res == null) {
+      return Future.value(null);
+    }
+    return Future.value(UserModel.fromJson(res.toJson()));
+  }
+
+  Future<void> savedToken(String token) => setAuthToken(token);
 }

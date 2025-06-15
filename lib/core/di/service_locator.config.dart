@@ -32,7 +32,6 @@ import '../../features/signup/domain/usecases/user_signup_usecase.dart'
     as _i516;
 import '../../features/signup/presentation/bloc/signup_bloc.dart' as _i907;
 import '../auth_global_cubit/auth_cubit.dart' as _i564;
-import '../local/local_Storage_base.dart' as _i49;
 import '../network/api_client.dart' as _i557;
 
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -53,23 +52,18 @@ _i174.GetIt inject(
   gh.singleton<_i166.ImportEmployeesUseCase>(
       () => _i166.ImportEmployeesUseCase(gh<_i612.EmployeeRepository>()));
   gh.lazySingleton<_i735.SignupBaseRepository>(
-      () => _i846.SignupRepositoryImplenetation(
-            gh<_i557.ApiClient>(),
-            gh<_i49.LocalStorage>(),
-          ));
-  gh.lazySingleton<_i874.SignInBaseRepositoty>(() => _i155.SignInRepository(
-        gh<_i557.ApiClient>(),
-        gh<_i49.LocalStorage>(),
-      ));
+      () => _i846.SignupRepositoryImplenetation(gh<_i557.ApiClient>()));
+  gh.lazySingleton<_i874.SignInBaseRepositoty>(
+      () => _i155.SignInRepository(gh<_i557.ApiClient>()));
+  gh.lazySingleton<_i516.UserSignupUsecase>(
+      () => _i516.UserSignupUsecase(gh<_i735.SignupBaseRepository>()));
   gh.factory<_i1069.ImporterBloc>(
       () => _i1069.ImporterBloc(gh<_i166.ImportEmployeesUseCase>()));
   gh.lazySingleton<_i422.SignInUsecase>(
       () => _i422.SignInUsecase(gh<_i874.SignInBaseRepositoty>()));
-  gh.factory<_i453.SignInBloc>(
-      () => _i453.SignInBloc(signInUsecase: gh<_i422.SignInUsecase>()));
-  gh.lazySingleton<_i516.UserSignupUsecase>(
-      () => _i516.UserSignupUsecase(gh<_i735.SignupBaseRepository>()));
   gh.factory<_i907.SignupBloc>(
       () => _i907.SignupBloc(userSignupUsecase: gh<_i516.UserSignupUsecase>()));
+  gh.factory<_i453.SignInBloc>(
+      () => _i453.SignInBloc(signInUsecase: gh<_i422.SignInUsecase>()));
   return getIt;
 }
