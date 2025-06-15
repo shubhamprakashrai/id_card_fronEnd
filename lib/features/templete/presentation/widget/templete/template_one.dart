@@ -92,7 +92,7 @@ class TemplateOne extends StatelessWidget {
                           backgroundColor: Colors.teal,
                           child: CircleAvatar(
                             radius: 42,
-                            // backgroundImage: AssetImage(imagePath),
+                            backgroundImage: AssetImage(imagePath),
                           ),
                         ),
               ),

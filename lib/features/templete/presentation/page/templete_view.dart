@@ -1,25 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:id_card_front_end/features/templete/presentation/widget/form_page.dart';
-// class TempleteView extends  StatefulWidget{
-//   const TempleteView({super.key});
-
-//   @override
-//   State<TempleteView> createState(){
-//     return _TempleteView();
-//   }
-// }
-
-// class _TempleteView extends State<TempleteView>{
-//   @override
-//   Widget build(BuildContext context) {
-//    return Scaffold(
-//     body: Center(child: Text("Hi User please slect the id card")),
-//    );
-//   }
-
-// }
-
-
 import '../widget/templete/template_five.dart';
 import '../widget/templete/template_four.dart';
 import '../widget/templete/template_one.dart';
@@ -35,10 +15,10 @@ class TempleteView extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> templates = [
           TemplateOne(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
-          TemplateTwo(name: "name",role: "role",),
-          TemplateThree(name: "name",role: "role",),
-          TemplateFour(name: "name",role: "role",),
-          TemplateFive(name: "name",role: "role",),
+          TemplateTwo(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
+          TemplateThree(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
+          TemplateFour(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
+          TemplateFive(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "assets/images/profile.jpg",phone: "9876543210",),
     ];
 
     return Scaffold(
