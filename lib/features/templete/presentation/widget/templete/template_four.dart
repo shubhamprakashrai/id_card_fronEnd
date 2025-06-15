@@ -1,26 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 
 class TemplateFour extends StatelessWidget {
   const TemplateFour({
     super.key,
-    required this.name,
-    required this.role,
-    required this.id,
-    required this.dob,
-    required this.blood,
-    required this.phone,
-    required this.email,
-    required this.imagePath,
+    required this.employee,
   });
+  final Employee employee;
 
-  final String name;
-  final String role;
-  final String id;
-  final String dob;
-  final String blood;
-  final String phone;
-  final String email;
-  final String imagePath;
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,14 +50,14 @@ class TemplateFour extends StatelessWidget {
                         color: Color(0xFFFAD4CF), // Fallback background color
                       ),
                       child: ClipOval(
-                        child: imagePath.isEmpty
+                        child: employee.photoFileName.isEmpty
                             ? const Icon(
                           Icons.person,
                           size: 60,
                           color: Colors.white,
                         )
                             : Image.asset(
-                          imagePath,
+                          employee.photoFileName,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return const Center(
@@ -91,7 +79,7 @@ class TemplateFour extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      name,
+                      employee.fullName,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -99,7 +87,7 @@ class TemplateFour extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      role,
+                      employee.designation,
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.teal,
@@ -107,17 +95,11 @@ class TemplateFour extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    infoRow("ID NO", id),
-                    infoRow("DOB", dob),
-                    infoRow("Blood", blood),
-                    infoRow("Phone", phone),
-                    infoRow("E-mail", email),
-                    //  const Spacer(),
-                    // Image.asset(
-                    //   'assets/images/barcode.png', // placeholder for barcode
-                    //   height: 40,
-                    // ),
-                    //  const SizedBox(height: 8),
+                    infoRow("ID NO", employee.idNumber),
+                    infoRow("DOB", employee.dob),
+                    infoRow("Blood", employee.bloodGroup),
+                    infoRow("Phone", employee.mobileNumber),
+                    infoRow("E-mail", employee.email),
                   ],
                 ),
               ],

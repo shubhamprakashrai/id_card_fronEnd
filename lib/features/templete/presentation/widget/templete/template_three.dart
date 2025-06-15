@@ -1,27 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 
 class TemplateThree extends StatelessWidget {
 
   const TemplateThree({
     super.key,
-    required this.name,
-    required this.role,
-    required this.id,
-    required this.dob,
-    required this.blood,
-    required this.phone,
-    required this.email,
-    required this.imagePath,
+    required this.employee,
   });
+  final Employee employee;
 
-  final String name;
-  final String role;
-  final String id;
-  final String dob;
-  final String blood;
-  final String phone;
-  final String email;
-  final String imagePath;
+
   @override
   Widget build(BuildContext context) {
     return
@@ -45,8 +33,8 @@ class TemplateThree extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border.all(color:  Color(0xff557eb0),width: 4),
                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                    image: imagePath.isNotEmpty?DecorationImage(
-                      image: AssetImage(imagePath),
+                    image: employee.photoFileName.isNotEmpty?DecorationImage(
+                      image: AssetImage(employee.photoFileName),
                       fit: BoxFit.cover,
                     ): null,
                   ),
@@ -54,7 +42,7 @@ class TemplateThree extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      name,
+                      employee.fullName,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -62,7 +50,7 @@ class TemplateThree extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      role,
+                      employee.designation,
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.teal,
@@ -70,17 +58,11 @@ class TemplateThree extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    infoRow("ID NO", id),
-                    infoRow("DOB", dob),
-                    infoRow("Blood", blood),
-                    infoRow("Phone", phone),
-                    infoRow("E-mail", email),
-                    //  const Spacer(),
-                    // Image.asset(
-                    //   'assets/images/barcode.png', // placeholder for barcode
-                    //   height: 40,
-                    // ),
-                    //  const SizedBox(height: 8),
+                    infoRow("ID NO", employee.idNumber),
+                    infoRow("DOB", employee.dob),
+                    infoRow("Blood", employee.bloodGroup),
+                    infoRow("Phone", employee.mobileNumber),
+                    infoRow("E-mail", employee.email),
                   ],
                 ),
               ],
@@ -90,9 +72,6 @@ class TemplateThree extends StatelessWidget {
               fit: BoxFit.fill,
               height: 50,
             ),
-            // SizedBox(height: 8),
-            // Text("Name: $name", style: const TextStyle(fontSize: 16)),
-            //  Text("Role: $role", style: const TextStyle(fontSize: 16)),
           ],
         ),
       );

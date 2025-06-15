@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:id_card_front_end/core/router/route_names.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 import '../widget/templete/template_five.dart';
 import '../widget/templete/template_four.dart';
 import '../widget/templete/template_one.dart';
@@ -9,17 +10,37 @@ import '../widget/templete/template_two.dart';
 
 
 
-class TempleteView extends StatelessWidget {
-  const TempleteView({super.key});
+class TemplateView extends StatefulWidget {
+  const TemplateView({super.key});
+
+  @override
+  State<TemplateView> createState() => _TemplateViewState();
+}
+
+class _TemplateViewState extends State<TemplateView> {
+  // Dummy employee data
+  Employee get dummyEmployee => Employee(
+    fullName: 'John Doe',
+    designation: 'Senior Developer',
+    department: 'Engineering',
+    idNumber: 'EMP-007',
+    issueDate: '01/01/2024',
+    expiryDate: '31/12/2025',
+    photoFileName: 'assets/images/profile_placeholder.png', // Make sure this asset exists
+    // Add any other required fields from your Employee model
+  );
 
   @override
   Widget build(BuildContext context) {
+
+
+
     final List<Widget> templates = [
-      TemplateOne(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
-      TemplateTwo(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
-      TemplateThree(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
-      TemplateFour(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
-      TemplateFive(name: "name",role: "role",blood: "A+",dob: "01/01/1990",email: "john@example.com",id: "123456",imagePath: "",phone: "9876543210",),
+      TemplateOne(employee: dummyEmployee),
+      TemplateTwo(employee: dummyEmployee),
+      TemplateThree(employee: dummyEmployee),
+      TemplateFour(employee: dummyEmployee),
+      TemplateFive(employee: dummyEmployee),
     ];
 
     return Scaffold(

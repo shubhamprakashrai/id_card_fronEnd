@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'preview_page.dart';
@@ -18,17 +19,16 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
-  final nameController = TextEditingController();
-  final roleController = TextEditingController();
-  final idController = TextEditingController();
-  final dobController = TextEditingController();
-  final bloodController = TextEditingController();
-  final phoneController = TextEditingController();
-  final emailController = TextEditingController();
-
+  final fullNameController = TextEditingController();
+  final designationController = TextEditingController();
+  final idNumberController = TextEditingController();
+  final departmentController = TextEditingController();
+  final issueDateController = TextEditingController();
+  final expiryDateController = TextEditingController();
   File? selectedImage;
+  String? imagePath;
 
-  // Image Picker with setState
+  // Image Picker
   Future<void> pickImage() async {
     if (Platform.isAndroid) {
       if (await Permission.photos.request().isDenied &&
@@ -44,6 +44,7 @@ class _FormPageState extends State<FormPage> {
     if (image != null) {
       setState(() {
         selectedImage = File(image.path);
+        imagePath = image.path; // Store the path for preview
       });
       print("Image picked: ${image.path}");
     } else {
@@ -51,113 +52,68 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
-  Widget selectedWidget({
-    required String name,
-    required String role,
-    required String id,
-    required String dob,
-    required String blood,
-    required String phone,
-    required String email,
-    required String imagePath,
-  }) {
+  // Get the appropriate template widget
+  Widget _getTemplateWidget(Employee employee) {
     switch (widget.index) {
       case 0:
-        return TemplateOne(
-          name: name,
-          role: role,
-          id: id,
-          dob: dob,
-          blood: blood,
-          phone: phone,
-          email: email,
-          imagePath: imagePath,
-        );
+        return TemplateOne(employee: employee);
       case 1:
-        return TemplateTwo(
-          name: name,
-          role: role,
-          id: id,
-          dob: dob,
-          blood: blood,
-          phone: phone,
-          email: email,
-          imagePath: imagePath,
-        );
+        return TemplateTwo(employee: employee);
       case 2:
-        return TemplateThree(
-          name: name,
-          role: role,
-          id: id,
-          dob: dob,
-          blood: blood,
-          phone: phone,
-          email: email,
-          imagePath: imagePath,
-        );
+        return TemplateThree(employee: employee);
       case 3:
-        return TemplateFour(
-          name: name,
-          role: role,
-          id: id,
-          dob: dob,
-          blood: blood,
-          phone: phone,
-          email: email,
-          imagePath: imagePath,
-        );
+        return TemplateFour(employee: employee);
       case 4:
-        return TemplateFive(
-          name: name,
-          role: role,
-          id: id,
-          dob: dob,
-          blood: blood,
-          phone: phone,
-          email: email,
-          imagePath: imagePath,
-        );
+        return TemplateFive(employee: employee);
       default:
         return const Text("Invalid template selected");
     }
   }
 
   void onPreview() {
-    final name = nameController.text.trim();
-    final role = roleController.text.trim();
-    final id = idController.text.trim();
-    final dob = dobController.text.trim();
-    final blood = bloodController.text.trim();
-    final phone = phoneController.text.trim();
-    final email = emailController.text.trim();
-    final imagePath = selectedImage?.path;
+    final employee = Employee(
+      fullName: fullNameController.text.trim(),
+      designation: designationController.text.trim(),
+      idNumber: idNumberController.text.trim(),
+      department: departmentController.text.trim(),
+      issueDate: issueDateController.text.trim(),
+      expiryDate: expiryDateController.text.trim(),
+      photoFileName: imagePath ?? '',
+    );
 
-    if ([name, role, id, dob, blood, phone, email].any((field) => field.isEmpty)) {
+    if ([
+      employee.fullName,
+      employee.designation,
+      employee.idNumber,
+      employee.department,
+      employee.issueDate,
+      employee.expiryDate,
+    ].any((field) => field.isEmpty)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all required fields')),
       );
       return;
     }
 
-    if(imagePath != null) {
-      Navigator.push(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => PreviewPage(
-          preview: selectedWidget(
-            name: name,
-            role: role,
-            id: id,
-            dob: dob,
-            blood: blood,
-            phone: phone,
-            email: email,
-            imagePath: imagePath,
-          ),
+          preview: _getTemplateWidget(employee),
         ),
       ),
     );
-    }
+  }
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    designationController.dispose();
+    idNumberController.dispose();
+    departmentController.dispose();
+    issueDateController.dispose();
+    expiryDateController.dispose();
+    super.dispose();
   }
 
   Widget buildTextField(String label, TextEditingController controller,
@@ -222,13 +178,12 @@ class _FormPageState extends State<FormPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            buildTextField("Name", nameController),
-            buildTextField("Role", roleController),
-            buildTextField("ID", idController),
-            buildTextField("Date of Birth (DD/MM/YYYY)", dobController),
-            buildTextField("Blood Group", bloodController),
-            buildTextField("Phone Number", phoneController, type: TextInputType.phone),
-            buildTextField("Email", emailController, type: TextInputType.emailAddress),
+            buildTextField("Full Name", fullNameController),
+            buildTextField("Designation", designationController),
+            buildTextField("ID Number", idNumberController),
+            buildTextField("Department", departmentController),
+            buildTextField("Issue Date (DD/MM/YYYY)", issueDateController),
+            buildTextField("Expiry Date (DD/MM/YYYY)", expiryDateController),
             const SizedBox(height: 12),
             buildImagePicker(),
             const SizedBox(height: 20),

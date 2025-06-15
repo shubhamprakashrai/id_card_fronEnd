@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 
 class TemplateTwo extends StatelessWidget {
 
   const TemplateTwo({
     super.key,
-    required this.name,
-    required this.role,
-    required this.id,
-    required this.dob,
-    required this.blood,
-    required this.phone,
-    required this.email,
-    required this.imagePath,
+    required this.employee
   });
 
-  final String name;
-  final String role;
-  final String id;
-  final String dob;
-  final String blood;
-  final String phone;
-  final String email;
-  final String imagePath;
+  final Employee employee;
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +35,18 @@ class TemplateTwo extends StatelessWidget {
                   // 0xff66BB6A
                   // color: Colors.red,
                   borderRadius: BorderRadius.all(Radius.circular(8)),
-                  image: imagePath.isNotEmpty?DecorationImage(
-                    image: AssetImage(imagePath),
+                  image: DecorationImage(
+                    image: AssetImage(employee.photoFileName.isNotEmpty
+                        ? employee.photoFileName
+                        : 'asset/images/profile_placeholder.png'),
                     fit: BoxFit.cover,
-                  ): null,
+                  ),
                 ),
               ),
               Column(
                 children: [
                   Text(
-                    name,
+                    employee.fullName,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -65,7 +54,7 @@ class TemplateTwo extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    role,
+                    employee.designation,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.teal,
@@ -73,11 +62,11 @@ class TemplateTwo extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  infoRow("ID NO", id),
-                  infoRow("DOB", dob),
-                  infoRow("Blood", blood),
-                  infoRow("Phone", phone),
-                  infoRow("E-mail", email),
+                  infoRow("ID NO", employee.idNumber),
+                  infoRow("DOB", employee.dob),
+                  infoRow("Blood", employee.bloodGroup),
+                  infoRow("Phone", employee.mobileNumber),
+                  infoRow("E-mail", employee.email),
                   //  const Spacer(),
                   // Image.asset(
                   //   'assets/images/barcode.png', // placeholder for barcode

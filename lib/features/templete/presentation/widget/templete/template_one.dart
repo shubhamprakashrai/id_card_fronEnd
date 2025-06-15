@@ -1,52 +1,15 @@
-// import 'package:flutter/material.dart';
-
-// class TemplateOne extends StatelessWidget {
-//   const TemplateOne({super.key, required this.name, required this.role});
-//    final String name;
-//   final String role;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.all(8),
-//       decoration: BoxDecoration(color: Colors.blue.shade50),
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children:  [
-//           Icon(Icons.person, size: 40, color: Colors.blue),
-//           SizedBox(height: 8),
-//             Text("Name: $name", style: const TextStyle(fontSize: 16)),
-//             Text("Role: $role", style: const TextStyle(fontSize: 16)),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 
 class TemplateOne extends StatelessWidget {
   const TemplateOne({
     super.key,
-    required this.name,
-    required this.role,
-    required this.id,
-    required this.dob,
-    required this.blood,
-    required this.phone,
-    required this.email,
-    required this.imagePath,
+    required this.employee
   });
 
-  final String name;
-  final String role;
-  final String id;
-  final String dob;
-  final String blood;
-  final String phone;
-  final String email;
-  final String imagePath; 
+  final Employee employee;
 
   @override
   Widget build(BuildContext context) {
@@ -88,59 +51,59 @@ class TemplateOne extends StatelessWidget {
               right: 0,
               child: Center(
                 child: CircleAvatar(
-                          radius: 45,
-                          backgroundColor: Colors.teal,
-                          child: (imagePath.isNotEmpty)? CircleAvatar(
-                            radius: 42,
-                            backgroundImage: AssetImage(imagePath),
-                          ): null,
-                        ),
+                  radius: 45,
+                  backgroundColor: Colors.teal,
+                  child: (employee.photoFileName.isNotEmpty)? CircleAvatar(
+                    radius: 42,
+                    backgroundImage: AssetImage(employee.photoFileName),
+                  ): null,
+                ),
               ),
             ),
             // Main Content
-             Positioned(
-              top: 260, 
+            Positioned(
+              top: 260,
               left: 0,
               right: 0,
-               child: Padding(
-                 padding: const EdgeInsets.only(left: 30,right: 30),
-                 child: Center(
-                   child: SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 30,right: 30),
+                child: Center(
+                  child: SizedBox(
                     height: 220,
-                     child: Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
-                       children: [
-                         Text(
-                           name,
-                           style: const TextStyle(
-                             fontSize: 20,
-                             fontWeight: FontWeight.bold,
-                             letterSpacing: 1.2,
-                           ),
-                         ),
-                         Text(
-                           role,
-                           style: const TextStyle(
-                             fontSize: 16,
-                             color: Colors.teal,
-                             fontWeight: FontWeight.w500,
-                           ),
-                         ),
-                         const SizedBox(height: 16),
-                         infoRow("ID NO", id),
-                         infoRow("DOB", dob),
-                         infoRow("Blood", blood),
-                         infoRow("Phone", phone),
-                         infoRow("E-mail", email),
-                       ],
-                     ),
-                   ),
-                 ),
-               ),
-             ),
-            
-         
+                      children: [
+                        Text(
+                          employee.fullName,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                        Text(
+                          employee.designation,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.teal,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        infoRow("ID NO", employee.idNumber),
+                        infoRow("DOB", employee.dob),
+                        infoRow("Blood", employee.bloodGroup),
+                        infoRow("Phone", employee.mobileNumber),
+                        infoRow("E-mail", employee.email),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+
           ],
         ),
       ),
@@ -174,4 +137,3 @@ class TemplateOne extends StatelessWidget {
     );
   }
 }
-

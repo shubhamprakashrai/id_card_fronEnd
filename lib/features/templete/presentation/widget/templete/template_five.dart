@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../../../data_scrapper/data/models/employee.dart';
+
 class TemplateFive extends StatelessWidget {
   const TemplateFive({
     super.key,
-    required this.name,
-    required this.role,
-    required this.id,
-    required this.dob,
-    required this.blood,
-    required this.phone,
-    required this.email,
-    required this.imagePath,
+    required this.employee,
   });
-
-  final String name;
-  final String role;
-  final String id;
-  final String dob;
-  final String blood;
-  final String phone;
-  final String email;
-  final String imagePath;
+  final Employee employee;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +19,8 @@ class TemplateFive extends StatelessWidget {
         children: [
           Icon(Icons.person_pin, size: 40, color: Colors.red),
           SizedBox(height: 8),
-         Text("Name: $name", style: const TextStyle(fontSize: 16)),
-            Text("Role: $role", style: const TextStyle(fontSize: 16)),
+         Text("Name: ${employee.fullName}", style: const TextStyle(fontSize: 16)),
+            Text("Role: ${employee.designation}", style: const TextStyle(fontSize: 16)),
         ],
       ),
     );
