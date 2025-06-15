@@ -1,5 +1,5 @@
 import 'dart:io';
-import '../entities/employee.dart';
+import '../../data/models/employee.dart';
 
 abstract class EmployeeRepository {
   Future<List<Employee>> importEmployeesFromExcel(File file);

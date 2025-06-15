@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:excel/excel.dart';
-import 'package:id_card_front_end/features/data_scrapper/domain/entities/employee.dart' show Employee;
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart' show Employee;
 import 'package:id_card_front_end/features/data_scrapper/domain/repositories/employee_repository.dart' show EmployeeRepository;
 import 'package:injectable/injectable.dart';
 
