@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:id_card_front_end/core/base/bloc_base/bloc_event.dart';
 import 'package:id_card_front_end/core/base/bloc_base/bloc_event_state.dart';
-import 'package:id_card_front_end/features/data_scrapper/domain/entities/employee.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 import 'package:id_card_front_end/features/data_scrapper/domain/use_cases/import_employees_usecase.dart';
 import 'package:injectable/injectable.dart';
 

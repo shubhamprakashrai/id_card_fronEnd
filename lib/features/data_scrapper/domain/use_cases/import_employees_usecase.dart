@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:id_card_front_end/core/base/base_use_case/use_case.dart';
-import 'package:id_card_front_end/features/data_scrapper/domain/entities/employee.dart';
+import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
 import 'package:injectable/injectable.dart';
 import 'package:id_card_front_end/features/data_scrapper/domain/repositories/employee_repository.dart';
 
