@@ -4,12 +4,14 @@ import 'package:id_card_front_end/core/network/api_client.dart';
 import 'package:id_card_front_end/features/signup/data/models/signup_request_model.dart';
 import 'package:id_card_front_end/features/signup/data/models/signup_response_model.dart';
 import 'package:id_card_front_end/features/signup/domain/respository/signup_base_repository.dart';
+import 'package:injectable/injectable.dart';
 
+@LazySingleton(as: SignupBaseRepository)
 class SignupRepositoryImplenetation extends SignupBaseRepository{
   
   final ApiClient apiClient;
   final LocalStorage localStorage;
-  SignupRepositoryImplenetation(this.apiClient, this.localStorage);
+  const SignupRepositoryImplenetation(this.apiClient, this.localStorage);
 
   @override
   Future<SignupResponseModel> signUpUser(SignupRequestModel model) async {

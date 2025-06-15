@@ -8,31 +8,30 @@ import 'package:id_card_front_end/env/env_loader.dart';
 import 'package:id_card_front_end/features/login/presentation/manager/sign_in_bloc.dart';
 import 'package:id_card_front_end/features/signup/presentation/bloc/signup_bloc.dart';
 
-void main() async{
-   WidgetsFlutterBinding.ensureInitialized();
-   await EnvLoader.load();
-   await Hive.initFlutter();
-   await Hive.openBox<String>('authBox');
-    setupLocator(); 
-   final authCubit = sl<AuthCubit>();
-   await authCubit.checkAuthStatus();
-  runApp(
-    MultiBlocProvider(providers: [
-    BlocProvider(create: (_) => sl<SignupBloc>()),
-    BlocProvider<AuthCubit>.value(value: authCubit),
-    BlocProvider(create: (context) => sl<SignInBloc>(),),
-    ], child:  MyApp())
-    );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EnvLoader.load();
+  await Hive.initFlutter();
+  await Hive.openBox<String>('authBox');
+  configureDependencies();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-        routerConfig: AppRouter.router,
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => sl<SignupBloc>()),
+          BlocProvider(create: (context) => sl<AuthCubit>()),
+          BlocProvider(
+            create: (context) => sl<SignInBloc>(),
+          ),
+        ],
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: AppRouter.router,
+        ));
   }
 }
-

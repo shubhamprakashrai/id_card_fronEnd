@@ -3,8 +3,10 @@ import 'package:id_card_front_end/features/signup/data/models/signup_response_mo
 import 'package:id_card_front_end/features/signup/domain/usecases/user_signup_usecase.dart';
 import 'package:id_card_front_end/features/signup/presentation/bloc/signup_event.dart';
 import 'package:id_card_front_end/features/signup/presentation/bloc/signup_state.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logger/web.dart';
 
+@injectable
 class SignupBloc extends Bloc<SignupEvent,SignupState> {
   final UserSignupUsecase userSignupUsecase;
   final Logger logger = Logger();
