@@ -1,4 +1,3 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -33,7 +32,6 @@ import '../../features/signup/domain/usecases/user_signup_usecase.dart'
     as _i516;
 import '../../features/signup/presentation/bloc/signup_bloc.dart' as _i907;
 import '../auth_global_cubit/auth_cubit.dart' as _i564;
-import '../local/hive_local_storage.dart' as _i749;
 import '../local/local_Storage_base.dart' as _i49;
 import '../network/api_client.dart' as _i557;
 
@@ -48,18 +46,17 @@ _i174.GetIt inject(
     environment,
     environmentFilter,
   );
+  gh.factory<_i564.AuthCubit>(() => _i564.AuthCubit());
   gh.lazySingleton<_i557.ApiClient>(() => _i557.ApiClient());
   gh.lazySingleton<_i612.EmployeeRepository>(
       () => _i588.EmployeeRepositoryImpl());
   gh.singleton<_i166.ImportEmployeesUseCase>(
       () => _i166.ImportEmployeesUseCase(gh<_i612.EmployeeRepository>()));
-  gh.lazySingleton<_i49.LocalStorage>(() => _i749.HiveStorage());
   gh.lazySingleton<_i735.SignupBaseRepository>(
       () => _i846.SignupRepositoryImplenetation(
             gh<_i557.ApiClient>(),
             gh<_i49.LocalStorage>(),
           ));
-  gh.factory<_i564.AuthCubit>(() => _i564.AuthCubit(gh<_i49.LocalStorage>()));
   gh.lazySingleton<_i874.SignInBaseRepositoty>(() => _i155.SignInRepository(
         gh<_i557.ApiClient>(),
         gh<_i49.LocalStorage>(),
