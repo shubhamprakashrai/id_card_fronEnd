@@ -35,12 +35,10 @@ class TemplateTwo extends StatelessWidget {
                   // 0xff66BB6A
                   // color: Colors.red,
                   borderRadius: BorderRadius.all(Radius.circular(8)),
-                  image: DecorationImage(
-                    image: AssetImage(employee.photoFileName.isNotEmpty
-                        ? employee.photoFileName
-                        : 'asset/images/profile_placeholder.png'),
+                  image:employee.photoFileName.isNotEmpty? DecorationImage(
+                    image: AssetImage(employee.photoFileName),
                     fit: BoxFit.cover,
-                  ),
+                  ): null,
                 ),
               ),
               Column(

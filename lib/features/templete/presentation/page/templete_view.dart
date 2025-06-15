@@ -26,7 +26,7 @@ class _TemplateViewState extends State<TemplateView> {
     idNumber: 'EMP-007',
     issueDate: '01/01/2024',
     expiryDate: '31/12/2025',
-    photoFileName: 'assets/images/profile_placeholder.png', // Make sure this asset exists
+    photoFileName: '', // Make sure this asset exists
     // Add any other required fields from your Employee model
   );
 
