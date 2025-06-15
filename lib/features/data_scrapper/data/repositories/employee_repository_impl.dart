@@ -1,23 +1,24 @@
-// lib/features/data_scrapper/domain/repositories/employee_repository.dart
 import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:id_card_front_end/features/data_scrapper/domain/entities/employee.dart' show Employee;
 import 'package:id_card_front_end/features/data_scrapper/domain/repositories/employee_repository.dart' show EmployeeRepository;
+import 'package:injectable/injectable.dart';
+
+import '../../domain/exception/import_employees_exception.dart' show ImportEmployeesException;
 
 
 
+@LazySingleton(as: EmployeeRepository)
 class EmployeeRepositoryImpl implements EmployeeRepository {
+
   @override
   Future<List<Employee>> importEmployeesFromExcel(File file) async {
     try {
       final bytes = await file.readAsBytes();
       final excel = Excel.decodeBytes(bytes);
-      
       final List<Employee> employees = [];
-      
       for (var table in excel.tables.keys) {
         final sheet = excel.tables[table]!;
-        
         // Skip header row (index 0)
         for (var i = 1; i < sheet.rows.length; i++) {
           final row = sheet.rows[i];
@@ -33,10 +34,14 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
           employees.add(employee);
         }
       }
-      
+
       return employees;
-    } catch (e) {
-      throw Exception('Error parsing Excel file: $e');
+    } catch (e, stackTrace) {
+      throw ImportEmployeesException(
+        message: 'Error parsing Excel file: ${e.toString()}',
+        code: 1002,
+        stackTrace: stackTrace,
+      );
     }
   }
 

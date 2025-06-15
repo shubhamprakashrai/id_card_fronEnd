@@ -12,6 +12,14 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../features/data_scrapper/data/repositories/employee_repository_impl.dart'
+    as _i588;
+import '../../features/data_scrapper/domain/repositories/employee_repository.dart'
+    as _i612;
+import '../../features/data_scrapper/domain/use_cases/import_employees_usecase.dart'
+    as _i166;
+import '../../features/data_scrapper/presentation/manager/importer_bloc/importer_bloc.dart'
+    as _i1069;
 import '../../features/login/data/repository/sign_in_repository.dart' as _i155;
 import '../../features/login/domain/repository/sign_in_base_repository.dart'
     as _i874;
@@ -41,6 +49,10 @@ _i174.GetIt inject(
     environmentFilter,
   );
   gh.lazySingleton<_i557.ApiClient>(() => _i557.ApiClient());
+  gh.lazySingleton<_i612.EmployeeRepository>(
+      () => _i588.EmployeeRepositoryImpl());
+  gh.singleton<_i166.ImportEmployeesUseCase>(
+      () => _i166.ImportEmployeesUseCase(gh<_i612.EmployeeRepository>()));
   gh.lazySingleton<_i49.LocalStorage>(() => _i749.HiveStorage());
   gh.lazySingleton<_i735.SignupBaseRepository>(
       () => _i846.SignupRepositoryImplenetation(
@@ -52,6 +64,8 @@ _i174.GetIt inject(
         gh<_i557.ApiClient>(),
         gh<_i49.LocalStorage>(),
       ));
+  gh.factory<_i1069.ImporterBloc>(
+      () => _i1069.ImporterBloc(gh<_i166.ImportEmployeesUseCase>()));
   gh.lazySingleton<_i422.SignInUsecase>(
       () => _i422.SignInUsecase(gh<_i874.SignInBaseRepositoty>()));
   gh.factory<_i453.SignInBloc>(

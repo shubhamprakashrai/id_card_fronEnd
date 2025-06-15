@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:id_card_front_end/core/auth_global_cubit/auth_cubit.dart';
-import 'package:id_card_front_end/core/di/service_locator.dart';
 import 'package:id_card_front_end/features/login/presentation/page/sign_in_view.dart';
 import 'package:id_card_front_end/features/signup/presentation/page/registration_page_view.dart';
 import 'package:id_card_front_end/features/splash/presentation/pages/splash_view.dart';
 import 'package:id_card_front_end/features/templete/presentation/page/templete_view.dart';
+import 'package:id_card_front_end/features/templete/presentation/widget/form_page.dart';
 
 import 'route_names.dart';
 
@@ -33,6 +32,11 @@ class AppRouter {
         path: RouteName.template,
         name: RouteName.template,
         builder: (context, state) => const TempleteView(),
+      ),
+      GoRoute(
+        path: RouteName.formView,
+        name: RouteName.formView,
+        builder: (context, state) => FormPage(index: state.extra as int,),
       ),
     ],
   );

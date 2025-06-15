@@ -5,6 +5,7 @@ import 'package:id_card_front_end/core/auth_global_cubit/auth_cubit.dart';
 import 'package:id_card_front_end/core/di/service_locator.dart';
 import 'package:id_card_front_end/core/router/app_router.dart';
 import 'package:id_card_front_end/env/env_loader.dart';
+import 'package:id_card_front_end/features/data_scrapper/presentation/manager/importer_bloc/importer_bloc.dart';
 import 'package:id_card_front_end/features/login/presentation/manager/sign_in_bloc.dart';
 import 'package:id_card_front_end/features/signup/presentation/bloc/signup_bloc.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<SignupBloc>(create: (context) => sl<SignupBloc>()),
           BlocProvider<AuthCubit>(create: (context) => sl<AuthCubit>()),
+          BlocProvider<ImporterBloc>(create: (context) => sl<ImporterBloc>()),
           BlocProvider<SignInBloc>(
             create: (context) => sl<SignInBloc>(),
           ),

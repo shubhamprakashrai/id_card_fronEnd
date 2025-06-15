@@ -1,4 +1,3 @@
-// lib/features/data_scrapper/presentation/pages/import_excel_page.dart
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +8,10 @@ import '../../domain/repositories/employee_repository.dart';
 class ImportExcelPage extends StatefulWidget {
   final EmployeeRepository repository;
 
-  const ImportExcelPage({Key? key, required this.repository}) : super(key: key);
+  const ImportExcelPage({super.key, required this.repository});
 
   @override
-  _ImportExcelPageState createState() => _ImportExcelPageState();
+  State<ImportExcelPage> createState() => _ImportExcelPageState();
 }
 
 class _ImportExcelPageState extends State<ImportExcelPage> {

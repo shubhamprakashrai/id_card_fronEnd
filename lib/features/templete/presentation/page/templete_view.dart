@@ -1,25 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:id_card_front_end/features/templete/presentation/widget/form_page.dart';
-// class TempleteView extends  StatefulWidget{
-//   const TempleteView({super.key});
-
-//   @override
-//   State<TempleteView> createState(){
-//     return _TempleteView();
-//   }
-// }
-
-// class _TempleteView extends State<TempleteView>{
-//   @override
-//   Widget build(BuildContext context) {
-//    return Scaffold(
-//     body: Center(child: Text("Hi User please slect the id card")),
-//    );
-//   }
-
-// }
-
-
+import 'package:go_router/go_router.dart';
+import 'package:id_card_front_end/core/router/route_names.dart';
 import '../widget/templete/template_five.dart';
 import '../widget/templete/template_four.dart';
 import '../widget/templete/template_one.dart';
@@ -49,14 +30,7 @@ class TempleteView extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => FormPage(
-                    index: index,
-                  ),
-                ),
-              );
+              context.pushNamed(RouteName.formView, extra: index);
             },
             child: Container(
               margin: const EdgeInsets.only(bottom: 24),
