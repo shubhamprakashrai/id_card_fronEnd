@@ -5,29 +5,29 @@ import 'package:injectable/injectable.dart';
 import 'package:logger/web.dart';
 import 'error_handler.dart';
 
-const String applicationJson="application/json";
-const String contentType="content-type";
-const String accept="accept";
-const int apiTimeOut=6000;
+const String applicationJson = "application/json";
+const String contentType = "content-type";
+const String accept = "accept";
+const int apiTimeOut = 60000;
 
 @lazySingleton
 class ApiClient {
-  Dio get _dio => Dio();
-  Logger logger=Logger();
+  final Logger logger = Logger();
+  late final Dio _dio;
 
   ApiClient() {
-    _dio.options = BaseOptions(
-      headers: {
-        'Content-Type': applicationJson,
-        'Accept': applicationJson,
-      },
-      connectTimeout: Duration(milliseconds: apiTimeOut),
-      receiveTimeout: Duration(milliseconds: apiTimeOut),
-      sendTimeout: Duration(milliseconds: apiTimeOut),
-      baseUrl: ApiConstants.baseUrl
-    );
-
-    _dio.interceptors.add(AppInterceptors());
+    _dio = Dio(
+      BaseOptions(
+        headers: {
+          'Content-Type': applicationJson,
+          'Accept': applicationJson,
+        },
+        connectTimeout: Duration(milliseconds: apiTimeOut),
+        receiveTimeout: Duration(milliseconds: apiTimeOut),
+        sendTimeout: Duration(milliseconds: apiTimeOut),
+        baseUrl: ApiConstants.baseUrl,
+      ),
+    )..interceptors.add(BaseInterceptor());
   }
 
   Future<Response> get(String path, {Map<String, dynamic>? query}) async {

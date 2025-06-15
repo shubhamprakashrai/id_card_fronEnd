@@ -30,14 +30,17 @@ class AppRouter {
     routes: [
       GoRoute(
         path: RouteName.registration,
+        name: RouteName.registration,
         builder: (context, state) => const RegistrationPageView(),
       ),
       GoRoute(
         path: RouteName.login,
+        name: RouteName.login,
         builder: (context, state) => const SignInView(),
       ),
       GoRoute(
         path: RouteName.template,
+        name: RouteName.template,
         builder: (context, state) => const TempleteView(),
       ),
     ],

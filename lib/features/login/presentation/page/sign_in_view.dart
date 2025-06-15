@@ -72,9 +72,7 @@ class _SignInView extends State<SignInView> {
       );
     }, listener: (context, state) async {
       if (state is SignInSucessState) {
-        await context
-            .read<AuthCubit>()
-            .updateAuthStatus(AuthStatus.authenticated);
+        await context.read<AuthCubit>().updateAuthStatus(AuthStatus.authenticated);
         context.go(RouteName.template);
       } else if (state is SignInErrorState) {
         showSnackBar(context, "Login failed");
@@ -152,7 +150,9 @@ class _SignInView extends State<SignInView> {
       children: [
         const Text("Don't have an account?"),
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              context.goNamed(RouteName.registration);
+            },
             child: const Text(
               "Sign Up",
               style: TextStyle(color: AppColors.purpleColors),

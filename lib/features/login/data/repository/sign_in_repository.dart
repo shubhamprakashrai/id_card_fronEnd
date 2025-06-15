@@ -18,8 +18,9 @@ class SignInRepository extends SignInBaseRepositoty{
   Future<SignupResponseModel> userSign(SignInRequestModel signInRequestModel) async {
     final Logger logger = Logger();
    try {
-      final response=(await apiClient.post(data: signInRequestModel.toJson(), ApiConstants.loginUrl));
-      final signInResponsce=SignupResponseModel.fromJson(response.data);
+      final response = (await apiClient.post(data: signInRequestModel.toJson(), ApiConstants.loginUrl));
+      logger.d("Sign in response status code: ${response.data}");
+      final signInResponsce= SignupResponseModel.fromJson(response.data);
       logger.d("sign in responsce __ ${signInResponsce.user.email}");
       await localStorage.savedToken(signInResponsce.token);
       await localStorage.saveUser(signInResponsce.user);
