@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:id_card_front_end/core/constants/api_constants.dart';
 import 'package:id_card_front_end/core/network/dio_interceptor.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logger/web.dart';
 import 'error_handler.dart';
 
@@ -9,11 +10,12 @@ const String contentType="content-type";
 const String accept="accept";
 const int apiTimeOut=6000;
 
+@lazySingleton
 class ApiClient {
-  final Dio _dio;
+  Dio get _dio => Dio();
   Logger logger=Logger();
 
-  ApiClient(this._dio) {
+  ApiClient() {
     _dio.options = BaseOptions(
       headers: {
         'Content-Type': applicationJson,

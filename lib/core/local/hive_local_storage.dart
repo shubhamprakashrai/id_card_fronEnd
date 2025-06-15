@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:hive/hive.dart';
 import 'package:id_card_front_end/core/local/local_Storage_base.dart';
 import 'package:id_card_front_end/features/signup/data/models/signup_response_model.dart';
+import 'package:injectable/injectable.dart';
 
+@LazySingleton(as: LocalStorage)
 class HiveStorage extends  LocalStorage{
   static const String _boxName='authBox';
   static const String _tokenKey='token';

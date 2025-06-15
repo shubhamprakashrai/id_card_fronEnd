@@ -23,9 +23,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => sl<SignupBloc>()),
-          BlocProvider(create: (context) => sl<AuthCubit>()),
-          BlocProvider(
+          BlocProvider<SignupBloc>(create: (context) => sl<SignupBloc>()),
+          BlocProvider<AuthCubit>(create: (context) => sl<AuthCubit>()),
+          BlocProvider<SignInBloc>(
             create: (context) => sl<SignInBloc>(),
           ),
         ],
