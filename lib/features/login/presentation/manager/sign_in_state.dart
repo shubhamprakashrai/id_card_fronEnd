@@ -2,21 +2,21 @@
 import 'package:id_card_front_end/features/signup/data/models/signup_response_model.dart';
 
 abstract class SignInState {
-
+  const SignInState();
 }
 
 class SignInInitialState extends SignInState {
-
+  const SignInInitialState();
 }
 
 class SignInSucessState extends SignInState{
-  SignupResponseModel signInResponseModel;
-  SignInSucessState({required this.signInResponseModel});
+  final SignupResponseModel signInResponseModel;
+  const SignInSucessState({required this.signInResponseModel});
 }
 
 class SignInErrorState extends SignInState {
-  String errrorMessage;
-  SignInErrorState(this.errrorMessage);
+  final String errrorMessage;
+  const SignInErrorState(this.errrorMessage);
   
 }
 

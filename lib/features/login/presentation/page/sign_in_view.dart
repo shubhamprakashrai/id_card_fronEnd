@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:id_card_front_end/core/auth_global_cubit/auth_cubit.dart';
+import 'package:id_card_front_end/core/router/route_names.dart';
 import 'package:id_card_front_end/core/ui_Utils/custom_btn.dart';
 import 'package:id_card_front_end/core/ui_Utils/custom_textfield.dart';
 import 'package:id_card_front_end/core/utils/app_colors.dart';
@@ -69,20 +70,16 @@ class _SignInView extends State<SignInView> {
           ),
         ),
       );
-    }, 
-    listener: (context, state) async {
-  if (state is SignInSucessState){
-    await context.read<AuthCubit>().updateAuthStatus(AuthStatus.authenticated);
-    context.go('/templeteView'); 
-  } else if (state is SignInErrorState) {
-    showSnackBar(context, "Login failed");
-  }
-}
-
-
-
-    
-    ));
+    }, listener: (context, state) async {
+      if (state is SignInSucessState) {
+        await context
+            .read<AuthCubit>()
+            .updateAuthStatus(AuthStatus.authenticated);
+        context.go(RouteName.template);
+      } else if (state is SignInErrorState) {
+        showSnackBar(context, "Login failed");
+      }
+    }));
   }
 
   Widget _inputField(BuildContext context, SignInState state) {

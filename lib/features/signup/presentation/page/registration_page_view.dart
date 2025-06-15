@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:id_card_front_end/core/ui_Utils/custom_btn.dart';
 import 'package:id_card_front_end/core/ui_Utils/custom_textfield.dart';
 import 'package:id_card_front_end/core/utils/show_snackbar.dart';
+import 'package:id_card_front_end/core/router/route_names.dart';
 import 'package:id_card_front_end/features/signup/data/models/signup_request_model.dart';
 import 'package:id_card_front_end/features/signup/presentation/bloc/signup_bloc.dart';
 import 'package:id_card_front_end/features/signup/presentation/bloc/signup_event.dart';
@@ -23,8 +24,8 @@ class _RegistrationPageView extends State<RegistrationPageView> {
   final _roleController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
- 
- @override
+
+  @override
   void initState() {
     super.initState();
   }
@@ -107,7 +108,8 @@ class _RegistrationPageView extends State<RegistrationPageView> {
                   text: "Sign Up",
                   isLoading: state is SignupLoadingState,
                   onPressed: () {
-                    if (_passwordController.text != _confirmPasswordController.text) {
+                    if (_passwordController.text !=
+                        _confirmPasswordController.text) {
                       showSnackBar(context, "Passwords do not match");
                       return;
                     }
@@ -133,9 +135,10 @@ class _RegistrationPageView extends State<RegistrationPageView> {
                     const Text("Already have an account? "),
                     TextButton(
                         onPressed: () {
-                         context.go('/lgingPage');
+                          context.go(RouteName.login);
                         },
-                        child: const Text("Login", style: TextStyle(color: Colors.purple))),
+                        child: const Text("Login",
+                            style: TextStyle(color: Colors.purple))),
                   ],
                 )
               ],

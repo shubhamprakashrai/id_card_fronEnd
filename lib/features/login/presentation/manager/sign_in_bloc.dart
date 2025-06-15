@@ -6,11 +6,15 @@ import 'sign_in_event.dart';
 import 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent,SignInState> {
-SignInUsecase signInUsecase;
-  SignInBloc({required this.signInUsecase}):super(SignInInitialState()){
-    on<UserSignInEvent>(_userSignIn);
-  }
- Logger logger=Logger();
+
+  final SignInUsecase signInUsecase;
+
+ SignInBloc({required this.signInUsecase}):super(const SignInInitialState()){
+   on<UserSignInEvent>(_userSignIn);
+ }
+
+ final Logger logger = Logger();
+
  void _userSignIn(UserSignInEvent event, Emitter<SignInState> emit)async{
   try {
     emit(SignupProcessingState());
