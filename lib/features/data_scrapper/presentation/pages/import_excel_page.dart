@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:id_card_front_end/core/router/route_names.dart';
+import 'package:id_card_front_end/features/templete/presentation/widget/template_manager/template_manager.dart';
 import '../../data/models/employee.dart';
 import '../manager/importer_bloc/importer_bloc.dart';
 
@@ -33,9 +35,14 @@ class _ImportExcelViewState extends State<_ImportExcelView> {
     }
   }
 
-  void _saveEmployees(List<Employee> employees) {
-    if (employees.isEmpty) return;
+  void _generateIds(List<Employee> employees) {
+    context.pushNamed(RouteName.generateIds, queryParameters: {
+      "templateID": _selectedTemplate?.toString() ?? "0"
+    }, extra: employees);
   }
+
+  int? _selectedTemplate;
+
 
   void _clearImportedData() {
     context.read<ImporterBloc>().add(const ClearImportedDataEvent());
@@ -93,6 +100,37 @@ class _ImportExcelViewState extends State<_ImportExcelView> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  Text(
+                    'Select Template:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<int>(
+                    value: _selectedTemplate ?? 0,
+                    hint: const Text("Choose a template"),
+                    onChanged: (int? value) {
+                      setState(() {
+                        _selectedTemplate = value;
+                      });
+                    },
+                    items: List.generate(TemplateManager.templateNames.length, (index) {
+                      return DropdownMenuItem<int>(
+                        value: index,
+                        child: Text(TemplateManager.templateNames[index]),
+                      );
+                    }),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(28.0),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+
+                  const SizedBox(height: 8),
+                  // Row with two buttons: Clear and Save All Employees
                   Row(
                     children: [
                       Expanded(
@@ -106,8 +144,8 @@ class _ImportExcelViewState extends State<_ImportExcelView> {
                         child: ElevatedButton(
                           onPressed: state.isLoading || state.data!.isEmpty
                               ? null
-                              : () => _saveEmployees(state.data!),
-                          child: const Text('Save All Employees'),
+                              : () => _generateIds(state.data!),
+                          child: const Text('Generate IDs'),
                         ),
                       ),
                     ],

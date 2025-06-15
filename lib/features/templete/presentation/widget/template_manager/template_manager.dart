@@ -38,6 +38,13 @@ class TemplateManager{
     ];
   }
 
+  static TemplateModel getTemplateById(int id, Employee employee) {
+    if (id < 0 || id >= templateNames.length) {
+      throw ArgumentError('Invalid template ID: $id');
+    }
+    return TemplateModel(name: templateNames[id], template: templates(employee)[id].template);
+  }
+
   static List<TemplateModel> get templatesWithDummy{
     return [
       TemplateModel(name: templateNames[0], template: TemplateOne(employee: dummyEmployee)),
