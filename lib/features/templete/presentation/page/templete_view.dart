@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:id_card_front_end/core/router/route_names.dart';
-import 'package:id_card_front_end/features/data_scrapper/data/models/employee.dart';
-import '../widget/templete/template_five.dart';
-import '../widget/templete/template_four.dart';
-import '../widget/templete/template_one.dart';
-import '../widget/templete/template_three.dart';
-import '../widget/templete/template_two.dart';
-
-
+import 'package:id_card_front_end/features/templete/presentation/widget/template_manager/template_manager.dart';
 
 class TemplateView extends StatefulWidget {
   const TemplateView({super.key});
@@ -18,30 +11,11 @@ class TemplateView extends StatefulWidget {
 }
 
 class _TemplateViewState extends State<TemplateView> {
-  // Dummy employee data
-  Employee get dummyEmployee => Employee(
-    fullName: 'John Doe',
-    designation: 'Senior Developer',
-    department: 'Engineering',
-    idNumber: 'EMP-007',
-    issueDate: '01/01/2024',
-    expiryDate: '31/12/2025',
-    photoFileName: '', // Make sure this asset exists
-    // Add any other required fields from your Employee model
-  );
 
   @override
   Widget build(BuildContext context) {
 
-
-
-    final List<Widget> templates = [
-      TemplateOne(employee: dummyEmployee),
-      TemplateTwo(employee: dummyEmployee),
-      TemplateThree(employee: dummyEmployee),
-      TemplateFour(employee: dummyEmployee),
-      TemplateFive(employee: dummyEmployee),
-    ];
+    var templateList = TemplateManager.templatesWithDummy;
 
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +31,7 @@ class _TemplateViewState extends State<TemplateView> {
         ],
       ),
       body: ListView.builder(
-        itemCount: templates.length,
+        itemCount: templateList.length,
         padding: const EdgeInsets.all(16),
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -81,7 +55,7 @@ class _TemplateViewState extends State<TemplateView> {
               padding: const EdgeInsets.all(12),
               child: SizedBox(
                 height: 600,
-                child: templates[index],
+                child: templateList[index].template,
               ),
             ),
           );

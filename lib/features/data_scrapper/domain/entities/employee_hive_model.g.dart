@@ -24,13 +24,17 @@ class EmployeeHiveModelAdapter extends TypeAdapter<EmployeeHiveModel> {
       issueDate: fields[4] as String,
       expiryDate: fields[5] as String,
       photoFileName: fields[6] as String,
+      mobileNumber: fields[7] as String,
+      bloodGroup: fields[8] as String,
+      dob: fields[9] as String,
+      email: fields[10] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, EmployeeHiveModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.fullName)
       ..writeByte(1)
@@ -44,7 +48,15 @@ class EmployeeHiveModelAdapter extends TypeAdapter<EmployeeHiveModel> {
       ..writeByte(5)
       ..write(obj.expiryDate)
       ..writeByte(6)
-      ..write(obj.photoFileName);
+      ..write(obj.photoFileName)
+      ..writeByte(7)
+      ..write(obj.mobileNumber)
+      ..writeByte(8)
+      ..write(obj.bloodGroup)
+      ..writeByte(9)
+      ..write(obj.dob)
+      ..writeByte(10)
+      ..write(obj.email);
   }
 
   @override

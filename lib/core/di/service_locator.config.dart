@@ -15,6 +15,8 @@ import '../../features/data_scrapper/data/repositories/employee_repository_impl.
     as _i588;
 import '../../features/data_scrapper/domain/repositories/employee_repository.dart'
     as _i612;
+import '../../features/data_scrapper/domain/use_cases/import_employees_from_local_use_case.dart'
+    as _i519;
 import '../../features/data_scrapper/domain/use_cases/import_employees_usecase.dart'
     as _i166;
 import '../../features/data_scrapper/presentation/manager/importer_bloc/importer_bloc.dart'
@@ -46,6 +48,8 @@ _i174.GetIt inject(
     environmentFilter,
   );
   gh.factory<_i564.AuthCubit>(() => _i564.AuthCubit());
+  gh.singleton<_i519.ImportEmployeesFromLocalUseCase>(
+      () => const _i519.ImportEmployeesFromLocalUseCase());
   gh.lazySingleton<_i557.ApiClient>(() => _i557.ApiClient());
   gh.lazySingleton<_i612.EmployeeRepository>(
       () => _i588.EmployeeRepositoryImpl());
@@ -55,10 +59,12 @@ _i174.GetIt inject(
       () => _i846.SignupRepositoryImplenetation(gh<_i557.ApiClient>()));
   gh.lazySingleton<_i874.SignInBaseRepositoty>(
       () => _i155.SignInRepository(gh<_i557.ApiClient>()));
+  gh.factory<_i1069.ImporterBloc>(() => _i1069.ImporterBloc(
+        gh<_i166.ImportEmployeesUseCase>(),
+        gh<_i519.ImportEmployeesFromLocalUseCase>(),
+      ));
   gh.lazySingleton<_i516.UserSignupUsecase>(
       () => _i516.UserSignupUsecase(gh<_i735.SignupBaseRepository>()));
-  gh.factory<_i1069.ImporterBloc>(
-      () => _i1069.ImporterBloc(gh<_i166.ImportEmployeesUseCase>()));
   gh.lazySingleton<_i422.SignInUsecase>(
       () => _i422.SignInUsecase(gh<_i874.SignInBaseRepositoty>()));
   gh.factory<_i907.SignupBloc>(

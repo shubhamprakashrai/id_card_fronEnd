@@ -1,7 +1,6 @@
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../data/models/employee.dart';
 import '../manager/importer_bloc/importer_bloc.dart';
 
@@ -29,33 +28,25 @@ class _ImportExcelViewState extends State<_ImportExcelView> {
   }
 
   Future<void> _importExcel() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['xls', 'xlsx'],
-    );
-
-    if (result != null && result.files.single.path != null) {
-      final file = File(result.files.single.path!);
-      if (mounted) {
-        context.read<ImporterBloc>().add(ImportExcelEvent(file));
-      }
+    if (mounted) {
+      context.read<ImporterBloc>().add(ImportExcelEvent());
     }
   }
 
-  Future<void> _saveEmployees(List<Employee> employees) async {
+  void _saveEmployees(List<Employee> employees) {
     if (employees.isEmpty) return;
+  }
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Save functionality to be implemented')),
-      );
-    }
+  void _clearImportedData() {
+    context.read<ImporterBloc>().add(const ClearImportedDataEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Import Employee Data')),
+      appBar: AppBar(
+        title: const Text('Import Employee Data')
+      ),
       body: BlocConsumer<ImporterBloc, ImporterState>(
         listener: (context, state) {
           if (state.error != null) {
@@ -102,12 +93,25 @@ class _ImportExcelViewState extends State<_ImportExcelView> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: state.isLoading || state.data!.isEmpty
-                        ? null
-                        : () => _saveEmployees(state.data!),
-                    child: const Text('Save All Employees'),
-                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => _clearImportedData(),
+                          child: const Text('Clear'),
+                        )
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: state.isLoading || state.data!.isEmpty
+                              ? null
+                              : () => _saveEmployees(state.data!),
+                          child: const Text('Save All Employees'),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ],
             ),
@@ -137,7 +141,7 @@ class _ImportExcelViewState extends State<_ImportExcelView> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
             child: const Text('Close'),
           ),
         ],

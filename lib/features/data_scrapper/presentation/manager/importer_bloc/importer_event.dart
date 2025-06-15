@@ -6,8 +6,7 @@ abstract class ImporterEvent extends BlocEvent {
 }
 
 class ImportExcelEvent extends ImporterEvent {
-  final File file;
-  const ImportExcelEvent(this.file);
+  const ImportExcelEvent();
 }
 
 class ClearImportedDataEvent extends ImporterEvent {
