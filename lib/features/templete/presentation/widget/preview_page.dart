@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
-class PreviewPage extends StatelessWidget {
-  Widget preview;
-
-   PreviewPage({
+class PreviewPage extends StatefulWidget {
+  final Widget preview;
+   const PreviewPage({
     super.key,
     required this.preview
-  
   });
 
+  @override
+  State<PreviewPage> createState() => _PreviewPageState();
+}
+
+class _PreviewPageState extends State<PreviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +22,7 @@ class PreviewPage extends StatelessWidget {
           child: SizedBox(
             height: 700,
             width: 550,
-            child: preview),
+            child: widget.preview),
         ),
       ),
     );

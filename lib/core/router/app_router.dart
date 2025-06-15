@@ -5,29 +5,20 @@ import 'package:id_card_front_end/core/auth_global_cubit/auth_cubit.dart';
 import 'package:id_card_front_end/core/di/service_locator.dart';
 import 'package:id_card_front_end/features/login/presentation/page/sign_in_view.dart';
 import 'package:id_card_front_end/features/signup/presentation/page/registration_page_view.dart';
+import 'package:id_card_front_end/features/splash/presentation/pages/splash_view.dart';
 import 'package:id_card_front_end/features/templete/presentation/page/templete_view.dart';
 
 import 'route_names.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: RouteName.login,
-    refreshListenable: GoRouterRefreshStream(sl<AuthCubit>().stream),
-    redirect: (context, state) {
-      final authStatus = sl<AuthCubit>().state;
-      final isLoggingIn = state.uri.path == RouteName.login ||
-          state.uri.path == RouteName.registration;
-
-      if (authStatus == AuthStatus.unKnown) return null;
-      if (authStatus == AuthStatus.unAuthenticated && !isLoggingIn) {
-        return RouteName.login;
-      }
-      if (authStatus == AuthStatus.authenticated && isLoggingIn) {
-        return RouteName.template;
-      }
-      return null;
-    },
+    initialLocation: RouteName.splash,
     routes: [
+      GoRoute(
+        path: RouteName.splash,
+        name: RouteName.splash,
+        builder: (context, state) => const SplashView(),
+      ),
       GoRoute(
         path: RouteName.registration,
         name: RouteName.registration,

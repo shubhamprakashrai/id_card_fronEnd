@@ -21,10 +21,8 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInView extends State<SignInView> {
-  final TextEditingController _textEditingEmailController =
-      TextEditingController();
-  final TextEditingController _textEditingPasswordController =
-      TextEditingController();
+  final TextEditingController _textEditingEmailController = TextEditingController();
+  final TextEditingController _textEditingPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +70,7 @@ class _SignInView extends State<SignInView> {
       );
     }, listener: (context, state) async {
       if (state is SignInSucessState) {
-        await context.read<AuthCubit>().updateAuthStatus(AuthStatus.authenticated);
+        await context.read<AuthCubit>().updateAuthStatus(AuthStatus.authenticated, state.signInResponseModel.user, state.signInResponseModel.token);
         context.go(RouteName.template);
       } else if (state is SignInErrorState) {
         showSnackBar(context, "Login failed");
