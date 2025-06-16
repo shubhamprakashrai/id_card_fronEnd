@@ -6,7 +6,6 @@ class RouteName {
   static const String formView = '/formView';
   static const String importExcelPage = '/importExcelPage';
   static const String generateIds = '/generateIds';
-
   // Private constructor to prevent instantiation
   RouteName._();
 }

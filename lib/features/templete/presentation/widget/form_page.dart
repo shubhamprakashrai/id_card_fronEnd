@@ -13,7 +13,6 @@ import 'templete/template_five.dart';
 class FormPage extends StatefulWidget {
   final int index;
   const FormPage({super.key, required this.index});
-
   @override
   State<FormPage> createState() => _FormPageState();
 }
@@ -33,7 +32,6 @@ class _FormPageState extends State<FormPage> {
   File? selectedImage;
   String? imagePath;
 
-  // Image Picker
   Future<void> pickImage() async {
     if (Platform.isAndroid) {
       if (await Permission.photos.request().isDenied &&
@@ -51,13 +49,21 @@ class _FormPageState extends State<FormPage> {
         selectedImage = File(image.path);
         imagePath = image.path;
       });
-      print("Image picked: ${image.path}");
-    } else {
-      print("No image selected.");
     }
   }
 
-  // Get template widget
+  Future<void> _selectDate(TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      controller.text = "${picked.day}/${picked.month}/${picked.year}";
+    }
+  }
+
   Widget _getTemplateWidget(Employee employee) {
     switch (widget.index) {
       case 0:
@@ -110,10 +116,13 @@ class _FormPageState extends State<FormPage> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => PreviewPage(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => PreviewPage(
           preview: _getTemplateWidget(employee),
         ),
+        transitionsBuilder: (_, animation, __, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
       ),
     );
   }
@@ -134,16 +143,18 @@ class _FormPageState extends State<FormPage> {
   }
 
   Widget buildTextField(String label, TextEditingController controller,
-      {TextInputType type = TextInputType.text}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: TextField(
-        controller: controller,
-        keyboardType: type,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-        ),
+      {TextInputType type = TextInputType.text, IconData? icon, VoidCallback? onTap}) {
+    return TextField(
+      controller: controller,
+      keyboardType: type,
+      readOnly: onTap != null,
+      onTap: onTap,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: icon != null ? Icon(icon) : null,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        filled: true,
+        fillColor: Colors.grey.shade100,
       ),
     );
   }
@@ -152,68 +163,159 @@ class _FormPageState extends State<FormPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Profile Image",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        selectedImage != null
-            ? ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.file(
-            selectedImage!,
-            width: 100,
-            height: 100,
-            fit: BoxFit.cover,
+        Center(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 6,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: selectedImage != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      selectedImage!,
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: const Icon(Icons.person, size: 50, color: Colors.grey),
+                  ),
           ),
-        )
-            : Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          alignment: Alignment.center,
-          child: const Text("No image"),
         ),
-        const SizedBox(height: 8),
-        ElevatedButton.icon(
-          onPressed: pickImage,
-          icon: const Icon(Icons.image),
-          label: const Text("Select Image"),
+        const SizedBox(height: 10),
+        Center(
+          child: ElevatedButton.icon(
+            onPressed: pickImage,
+            icon: const Icon(Icons.image, color: Colors.white),
+            label: const Text("Choose Image", style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.indigo,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
         ),
       ],
+    );
+  }
+
+  Widget buildSectionTitle(String title) {
+    return Row(
+      children: [
+        const Icon(Icons.label_important, color: Colors.indigo),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Colors.indigo,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCard(List<Widget> children) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: children
+              .map((e) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: e,
+                  ))
+              .toList(),
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Fill Your ID Card Details")),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            buildTextField("Full Name", fullNameController),
-            buildTextField("Designation", designationController),
-            buildTextField("ID Number", idNumberController),
-            buildTextField("Department", departmentController),
-            buildTextField("Issue Date (DD/MM/YYYY)", issueDateController),
-            buildTextField("Expiry Date (DD/MM/YYYY)", expiryDateController),
-            buildTextField("Mobile Number", mobileNumberController, type: TextInputType.phone),
-            buildTextField("Blood Group", bloodGroupController),
-            buildTextField("Date of Birth (DD/MM/YYYY)", dobController),
-            buildTextField("Email", emailController, type: TextInputType.emailAddress),
+      appBar: AppBar(
+        title: const Text("ID Card Information"),
+        centerTitle: true,
+        backgroundColor: Colors.indigo,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildSectionTitle("Personal Details"),
+              const SizedBox(height: 12),
+              _buildCard([
+                buildTextField("Full Name", fullNameController, icon: Icons.person),
+                buildTextField("Designation", designationController, icon: Icons.work),
+                buildTextField("Department", departmentController, icon: Icons.apartment),
+                buildTextField("Mobile Number", mobileNumberController,
+                    type: TextInputType.phone, icon: Icons.phone),
+                buildTextField("Email", emailController,
+                    type: TextInputType.emailAddress, icon: Icons.email),
+                buildTextField("Date of Birth (DD/MM/YYYY)", dobController,
+                    icon: Icons.cake, onTap: () => _selectDate(dobController)),
+                buildTextField("Blood Group", bloodGroupController, icon: Icons.bloodtype),
+              ]),
 
-            const SizedBox(height: 12),
-            buildImagePicker(),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: onPreview,
-              child: const Text("Preview"),
-            ),
-          ],
+              const SizedBox(height: 20),
+              buildSectionTitle("ID Details"),
+              const SizedBox(height: 12),
+              _buildCard([
+                buildTextField("ID Number", idNumberController, icon: Icons.badge),
+                buildTextField("Issue Date (DD/MM/YYYY)", issueDateController,
+                    icon: Icons.date_range, onTap: () => _selectDate(issueDateController)),
+                buildTextField("Expiry Date (DD/MM/YYYY)", expiryDateController,
+                    icon: Icons.event, onTap: () => _selectDate(expiryDateController)),
+              ]),
+
+              const SizedBox(height: 20),
+              buildSectionTitle("Photo"),
+              const SizedBox(height: 8),
+              buildImagePicker(),
+
+              const SizedBox(height: 24),
+              Center(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: onPreview,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      backgroundColor: Colors.indigo,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      "Preview ID Card",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

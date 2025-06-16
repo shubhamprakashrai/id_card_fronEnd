@@ -58,6 +58,7 @@ dependencies:
   pdf:
   printing:
   device_info_plus:
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

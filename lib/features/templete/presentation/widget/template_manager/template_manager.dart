@@ -7,6 +7,7 @@ import 'package:id_card_front_end/features/templete/presentation/widget/templete
 import 'package:id_card_front_end/features/templete/presentation/widget/templete/template_two.dart';
 
 class TemplateManager{
+
   static Employee get dummyEmployee => Employee(
     fullName: 'John Doe',
     designation: 'Senior Developer',
@@ -57,7 +58,6 @@ class TemplateManager{
 class TemplateModel{
   final String name;
   final Widget template;
-
   const TemplateModel({
     required this.name,
     required this.template,
