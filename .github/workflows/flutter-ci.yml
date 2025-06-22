@@ -1,0 +1,58 @@
+name: Flutter CI/CD with FVM (3.27.1)
+
+on:
+  push:
+    branches:
+      - development
+      - id_card_templete
+      - master
+  pull_request:
+    branches:
+      - development
+      - id_card_templete
+      - master
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install FVM globally
+        run: dart pub global activate fvm
+
+      - name: Configure PATH for FVM
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: Install Flutter 3.27.1 via FVM
+        run: |
+          fvm install 3.27.1
+          fvm use 3.27.1 --force
+
+      - name: Install dependencies
+        run: fvm flutter pub get
+
+      - name: Analyze code
+        run: fvm flutter analyze
+
+      - name: Run tests
+        run: fvm flutter test
+
+      # Always build APK (debug)
+      - name: Build Android APK
+        run: fvm flutter build apk --debug
+
+      # Always build Android AAB (release)
+      - name: Build Android AAB
+        run: fvm flutter build appbundle --release
+
+      # Always build iOS (release, unsigned)
+      - name: Build iOS (release)
+        run: fvm flutter build ios --release --no-codesign
