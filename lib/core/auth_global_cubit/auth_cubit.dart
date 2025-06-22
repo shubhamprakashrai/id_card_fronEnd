@@ -24,9 +24,9 @@ class AuthCubit extends Cubit<AuthStatus>{
 
   Future<void> checkAuthStatus() async {
     try {
-      print('Checking auth status...');
+      // print('Checking auth status...');
       final token = await HiveStorage.instance.getToken();
-      print('Token from storage: $token');
+      // print('Token from storage: $token');
 
       if (token != null) {
         emit(state.copyWith(status: AuthStatus.authenticated));
@@ -34,7 +34,7 @@ class AuthCubit extends Cubit<AuthStatus>{
         emit(state.copyWith(status: AuthStatus.unAuthenticated));
       }
     } catch (e) {
-      print('Error checking auth status: $e');
+      // print('Error checking auth status: $e');
       emit(state.copyWith(status: AuthStatus.unAuthenticated));
     }
   }

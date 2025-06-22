@@ -22,7 +22,7 @@ class SignupRepositoryImplenetation extends SignupBaseRepository{
     return signupResponse;
       
     } catch (e) {
-      print("Signup API error: $e");
+      // print("Signup API error: $e");
       throw Exception("Signup failed: $e");
     }
   }

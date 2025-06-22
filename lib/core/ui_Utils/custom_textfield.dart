@@ -41,7 +41,7 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           borderSide: BorderSide.none,
         ),
-        fillColor: Colors.purple.withOpacity(0.1),
+        fillColor: Colors.purple.withAlpha((0.1 * 255).round()),
         filled: true,
         prefixIcon: prefixIcon,
       ),

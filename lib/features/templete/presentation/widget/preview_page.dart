@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -25,12 +24,14 @@ class _PreviewPageState extends State<PreviewPage> {
       final status = await Permission.storage.request();
       return status.isGranted;
     }
+    // iOS permission handling can go here if needed
     return true;
   }
 
   Future<void> _downloadAsPdf() async {
     final hasPermission = await _checkStoragePermission();
     if (!hasPermission) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Storage permission is required')),
       );
@@ -51,13 +52,13 @@ class _PreviewPageState extends State<PreviewPage> {
       final pdfImage = pw.MemoryImage(pngBytes);
 
       pdf.addPage(pw.Page(
-        build: (context) => pw.Center(
-          child: pw.Image(pdfImage),
-        ),
+        build: (context) => pw.Center(child: pw.Image(pdfImage)),
       ));
 
       final dir = await getExternalStorageDirectory();
-      final file = File('${dir!.path}/id_preview_${DateTime.now().millisecondsSinceEpoch}.pdf');
+      if (dir == null) throw Exception("Unable to get storage directory");
+
+      final file = File('${dir.path}/id_preview_${DateTime.now().millisecondsSinceEpoch}.pdf');
       await file.writeAsBytes(await pdf.save());
 
       if (!mounted) return;
@@ -80,10 +81,12 @@ class _PreviewPageState extends State<PreviewPage> {
         ),
       );
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error generating PDF: $e")),
       );
     } finally {
+      if (!mounted) return;
       setState(() => _isGeneratingPdf = false);
     }
   }
@@ -95,7 +98,12 @@ class _PreviewPageState extends State<PreviewPage> {
         title: const Text("ID Card Preview"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.download),
+            icon: _isGeneratingPdf
+                ? const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.download),
             onPressed: _isGeneratingPdf ? null : _downloadAsPdf,
           ),
         ],

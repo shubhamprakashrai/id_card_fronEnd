@@ -36,7 +36,7 @@ class _FormPageState extends State<FormPage> {
     if (Platform.isAndroid) {
       if (await Permission.photos.request().isDenied &&
           await Permission.storage.request().isDenied) {
-        print("Permissions denied");
+        // print("Permissions denied");
         return;
       }
     }

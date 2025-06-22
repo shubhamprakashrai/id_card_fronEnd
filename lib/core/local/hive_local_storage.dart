@@ -43,7 +43,7 @@ class HiveStorage {
       _employeeBox = await Hive.openBox<EmployeeHiveModel>(_employeeBoxName);
       _userBox = await Hive.openBox<UserHiveModel>(_userBoxName);
     } catch (e) {
-      print('Error opening Hive boxes: $e');
+      // print('Error opening Hive boxes: $e');
     }
   }
 

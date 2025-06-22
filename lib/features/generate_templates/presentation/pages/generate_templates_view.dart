@@ -33,7 +33,7 @@ class _GenerateTemplatesViewState extends State<GenerateTemplatesView> {
   @override
   void initState() {
     super.initState();
-    print("Received length is ${widget.employees.length}, Template ID is ${widget.templateID}");
+    // print("Received length is ${widget.employees.length}, Template ID is ${widget.templateID}");
   }
 
   Future<bool> _checkStoragePermission() async {
