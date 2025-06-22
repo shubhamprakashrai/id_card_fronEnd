@@ -49,77 +49,77 @@ class _GenerateTemplatesViewState extends State<GenerateTemplatesView> {
     return true;
   }
 
-  Future<void> _generateAndSavePdf() async {
-    final hasPermission = await _checkStoragePermission();
-    if (!hasPermission) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Storage permission is required to save PDF')),
+Future<void> _generateAndSavePdf() async {
+  final hasPermission = await _checkStoragePermission();
+  if (!hasPermission) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Storage permission is required to save PDF')),
+    );
+    return;
+  }
+
+  if (widget.employees.isEmpty) return;
+
+  setState(() => _isGeneratingPdf = true);
+
+  try {
+    final pdf = pw.Document();
+
+    for (final employee in widget.employees) {
+      final widgetToCapture = TemplateWrapper(
+        child: _buildTemplate(employee, widget.templateID),
       );
-      return;
+
+      final image = await _captureWidgetToImage(widgetToCapture);
+      if (image == null) continue;
+
+      pdf.addPage(
+        pw.Page(
+          build: (context) => pw.Center(
+            child: pw.Image(pw.MemoryImage(image), fit: pw.BoxFit.contain),
+          ),
+        ),
+      );
     }
 
-    if (widget.employees.isEmpty) return;
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/id_cards_${DateTime.now().millisecondsSinceEpoch}.pdf');
+    await file.writeAsBytes(await pdf.save());
 
-    setState(() => _isGeneratingPdf = true);
+    if (!mounted) return;
 
-    try {
-      final pdf = pw.Document();
-
-      for (final employee in widget.employees) {
-        final widgetToCapture = TemplateWrapper(
-          child: _buildTemplate(employee, widget.templateID),
-        );
-
-        final image = await _captureWidgetToImage(widgetToCapture);
-        if (image == null) continue;
-
-        pdf.addPage(
-          pw.Page(
-            build: (context) => pw.Center(
-              child: pw.Image(pw.MemoryImage(image), fit: pw.BoxFit.contain),
-            ),
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('PDF Generated'),
+        content: const Text('The ID cards have been saved as a PDF file.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              if (!mounted) return;
+              await Printing.layoutPdf(
+                onLayout: (format) => file.readAsBytes(),
+              );
+            },
+            child: const Text('Open PDF'),
           ),
-        );
-      }
-
-      final output = await getTemporaryDirectory();
-      final file = File('${output.path}/id_cards_${DateTime.now().millisecondsSinceEpoch}.pdf');
-      await file.writeAsBytes(await pdf.save());
-
-      if (context.mounted) {
-        await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('PDF Generated'),
-            content: const Text('The ID cards have been saved as a PDF file.'),
-            actions: [
-              TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
-              TextButton(
-                onPressed: () async {
-                  Navigator.pop(context);
-                  await Printing.layoutPdf(
-                    onLayout: (format) => file.readAsBytes(),
-                  );
-                },
-                child: const Text('Open PDF'),
-              ),
-            ],
-          ),
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error generating PDF: $e')),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isGeneratingPdf = false);
-      }
+        ],
+      ),
+    );
+  } catch (e) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error generating PDF: $e')),
+    );
+  } finally {
+    if (mounted) {
+      setState(() => _isGeneratingPdf = false);
     }
   }
+}
 
   Future<Uint8List?> _captureWidgetToImage(Widget widget) async {
     try {

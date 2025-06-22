@@ -1,4 +1,4 @@
-name: Flutter CI/CD with FVM (3.27.1)
+name: ID Card App (3.27.1)
 
 on:
   push:
