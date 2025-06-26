@@ -69,14 +69,24 @@ class _SignInView extends State<SignInView> {
           ),
         ),
       );
-    }, listener: (context, state) async {
-      if (state is SignInSucessState) {
-        await context.read<AuthCubit>().updateAuthStatus(AuthStatus.authenticated, state.signInResponseModel.user, state.signInResponseModel.token);
-        context.go(RouteName.template);
-      } else if (state is SignInErrorState) {
-        showSnackBar(context, "Login failed");
-      }
-    }));
+    }, 
+    listener: (context, state) async {
+  if (state is SignInSucessState) {
+    await context.read<AuthCubit>().updateAuthStatus(
+      AuthStatus.authenticated,
+      state.signInResponseModel.user,
+      state.signInResponseModel.token,
+    );
+
+    if (!mounted) return;  
+
+    this.context.go(RouteName.template);  // use the State's context
+  } else if (state is SignInErrorState) {
+    showSnackBar(context, "Login failed");
+  }
+}
+
+    ));
   }
 
   Widget _inputField(BuildContext context, SignInState state) {

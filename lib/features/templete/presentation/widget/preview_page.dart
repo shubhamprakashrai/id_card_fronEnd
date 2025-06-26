@@ -86,8 +86,9 @@ class _PreviewPageState extends State<PreviewPage> {
         SnackBar(content: Text("Error generating PDF: $e")),
       );
     } finally {
-      if (!mounted) return;
-      setState(() => _isGeneratingPdf = false);
+      if (mounted) {
+    setState(() => _isGeneratingPdf = false);
+  }
     }
   }
 
